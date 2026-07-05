@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English for Waiters - Plataforma de Aprendizaje ESP</title>
+    <title>English for Waiters - Plataforma de Aprendizaje ESP - Tutti Ricchi</title>
+    <!-- Silenciador de la advertencia de producción del Play CDN de Tailwind -->
+    <script>
+        (function() {
+            const originalWarn = console.warn;
+            console.warn = function(...args) {
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+                    return; // Ignora la advertencia específica del CDN de Tailwind
+                }
+                originalWarn.apply(console, args);
+            };
+        })();
+    </script>
     <!-- Tailwind CSS para el diseño responsivo moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter & Poppins para un diseño alegre y profesional -->
@@ -94,7 +106,7 @@
                 </div>
                 <div>
                     <span class="text-xs font-black text-orange-600 tracking-widest uppercase block">English for Waiters</span>
-                    <h1 class="text-xl font-black text-slate-950 leading-tight">English Platform</h1>
+                    <h1 class="text-xl font-black text-slate-950 leading-tight">Tutti Ricchi English Platform</h1>
                 </div>
             </div>
             
@@ -122,17 +134,16 @@
             <div class="bg-gradient-to-r from-slate-900 via-orange-950 to-red-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
                 <div class="relative z-10 max-w-3xl space-y-4">
                     <span class="bg-gradient-to-r from-amber-500 to-red-500 text-white text-[11px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-block border border-white/20 shadow-sm">
-                        ¡Aprende inglés para dar un servicio de 5 estrellas!
+                        ¡Aprende inglés para dar un servicio de 5 estrellas en Tutti Ricchi!
                     </span>
                     <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
                         Welcome, <span id="welcomeStudentName" class="bg-gradient-to-r from-amber-300 via-orange-400 to-red-300 bg-clip-text text-transparent">Personal de Servicio</span>! 🍽️
                     </h2>
                     <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
-                        Aprende el inglés práctico necesario para comunicarte con comensales extranjeros. 
+                        Aprende el inglés práctico necesario para comunicarte con comensales extranjeros en Tutti Ricchi. 
+                    </p>
                     <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
-                        **Regla de oro**
-                    <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
-                        Debes completar el 100% de cada clase (Vocabulario/Gramática, ver el Video y aprobar el Test con el 100%) para poder desbloquear la siguiente lección. Let's start!
+                        <strong>**Regla de oro**</strong>: Debes completar el 100% de cada clase (Vocabulario/Gramática, ver el Video y aprobar el Test con el 100%) para poder desbloquear la siguiente lección. Let's start!
                     </p>
                     
                     <!-- Barra de progreso general del curso -->
@@ -147,9 +158,11 @@
                             <div id="overallProgressBar" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-2.5 rounded-full transition-all duration-700 shadow-sm" style="width: 0%"></div>
                         </div>
                         <div class="flex justify-between items-center mt-3 text-[11px] text-orange-300 font-bold">
-                            <span id="overallClassCount">0 de 8 Clases superadas</span>
+                            <span id="overallClassCount">0 de 6 Clases superadas</span>
                             <button id="resetProgressBtn" class="hover:text-red-400 transition-colors flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
-                          </div>
+                                <i class="fa-solid fa-rotate-right"></i> Reiniciar Progreso
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,7 +183,7 @@
                     </div>
                 </div>
                 
-                <div id="classGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div id="classGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Las clases se cargarán dinámicamente con JS -->
                 </div>
             </div>
@@ -268,7 +281,7 @@
                             <div class="space-y-4">
                                 <span class="text-xs font-black text-slate-400 uppercase tracking-widest block">Grammar in Action / Estructura del Idioma</span>
                                 <div class="bg-white p-5 rounded-2xl border border-orange-50/85 shadow-sm space-y-3">
-                                    <h5 class="text-base font-black text-orange-950 flex items-center gap-2" id="grammarTitle">
+                                    <h5 class="text-base font-black text-orange-955 flex items-center gap-2" id="grammarTitle">
                                         <i class="fa-solid fa-book-bookmark text-orange-500"></i> Tema de Gramática
                                     </h5>
                                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" id="grammarDescription">Explicación detallada de la gramática en español...</p>
@@ -282,7 +295,7 @@
                                     <p class="text-xs text-slate-600 font-extrabold" id="step1Status">Pendiente de revisión</p>
                                 </div>
                                 <button id="completeStep1Btn" onclick="markStep1Complete()" class="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-check"></i> Done/ Marcar como Aprendido
+                                    <i class="fa-solid fa-check"></i> Done / Marcar como Aprendido
                                 </button>
                             </div>
                         </div>
@@ -297,7 +310,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl font-black text-slate-900">Video de la Clase / Video Lecture</h4>
-                            <p class="text-xs text-slate-500">Listen and observe /Escucha y observa .</p>
+                            <p class="text-xs text-slate-500">Listen and observe / Escucha y observa.</p>
                         </div>
                     </div>
 
@@ -348,7 +361,7 @@
                                     </span>
                                 </div>
                                 <p class="text-xs text-slate-500 leading-relaxed">
-                                    Watch the first class here and then mark the video as "Complete" / Mira el vide y luego marca el video como completado cuando termines.
+                                    Watch the first class here and then mark the video as "Complete" / Mira el video y luego marca el video como completado cuando termines.
                                 </p>
                             </div>
 
@@ -373,7 +386,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl font-black text-slate-900">Prueba tu Conocimiento / Mini-Test</h4>
-                            <p class="text-xs text-slate-500">Show what you learned ¡Get the 100% to unlock the next level / Demuestra lo que has aprendido ¡Consigue el 100% para desbloquear el siguiente nivel!</p>
+                            <p class="text-xs text-slate-500">Show what you learned ¡Get the 100% to unlock the next level! / Demuestra lo que has aprendido ¡Consigue el 100% para desbloquear el siguiente nivel!</p>
                         </div>
                     </div>
 
@@ -418,7 +431,7 @@
     <footer class="bg-white/80 border-t border-slate-200 py-8 mt-12 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
             <div class="flex items-center gap-2">
-                <span class="font-black text-slate-700">English for Waiters Portal</span>
+                <span class="font-black text-slate-700">English for Waiters Portal - Tutti Ricchi</span>
                 <span>•</span>
                 <span>Inglés de Servicio para un Impacto Internacional</span>
             </div>
@@ -442,263 +455,307 @@
     </div>
 
     <script>
-        // Datos curriculares bilingües optimizados
+        // Datos curriculares bilingües optimizados para Tutti Ricchi (6 Clases)
         const classesData = [
             {
                 id: 1,
-                title: "Class 1: Greeting & Seating Guests",
-                subtitle: "Dar la bienvenida y ubicar a los comensales",
-                desc: "Aprende el arte de recibir a los clientes en la entrada, preguntar por reservas y guiarlos de forma educada hasta su mesa asignada.",
+                title: "Class 1: Welcoming and Table Seating",
+                subtitle: "Bienvenida y Ubicación de Clientes",
+                desc: "Aprende el arte de recibir a los clientes con cortesía en Tutti Ricchi, preguntar por el tamaño del grupo y guiarlos a sus asientos.",
                 grammar: {
-                    title: "Polite Welcomes & Helpful Commands / Saludos Educados",
-                    desc: "Para dar la bienvenida, utiliza siempre un tono alegre y formal: <strong>'Welcome to...'</strong>. Si deseas pedirles que te sigan, usa un mandato amable: <strong>'Please follow me'</strong> (Por favor, síganme) en lugar de un tosco 'come here'. Para verificar reservas usa la estructura formal: <strong>'Do you have a reservation?'</strong>."
+                    title: "Polite Greetings and Directives / Saludos y Mandatos Educados",
+                    desc: "Para dar la bienvenida, utiliza siempre un tono alegre y formal: <strong>'Welcome to Tutti Ricchi!'</strong>. Al preguntar el número de personas, usa la fórmula directa y educada: <strong>'How many people?'</strong>. Al guiarlos, diles con una sonrisa: <strong>'This way, please'</strong> (Por aquí, por favor) y al ofrecerles el asiento: <strong>'Have a seat, please.'</strong>"
                 },
                 video: {
-                    title: "Video 01: Receiving English-speaking Guests / Cómo saludar clientes en la entrada",
-                    duration: "08:15"
+                    title: "Video 01: Welcoming guests to Tutti Ricchi / Bienvenida y asignación de mesa",
+                    duration: "05:30"
                 },
                 vocabulary: [
-                    { term: "Welcome", translation: "Bienvenido(s)", pronunciation: "/ˈwel.kəm/", example: "Welcome to our steakhouse! Do you have a reservation?" },
-                    { term: "Follow me", translation: "Sígame / Sígannos", pronunciation: "/ˈfɒl.əʊ miː/", example: "Your table is ready. Please, follow me." },
-                    { term: "Reservation", translation: "Reserva / Reservación", pronunciation: "/ˌrez.əˈveɪ.ʃən/", example: "Hello, I have a reservation under the name of Smith." },
-                    { term: "Table for two", translation: "Mesa para dos", pronunciation: "/ˈteɪ.bəl fɔːr tuː/", example: "We would like a table for two near the window, please." },
-                    { term: "Host / Hostess", translation: "Recepcionista / Persona que da la bienvenida", pronunciation: "/həʊst/", example: "The hostess will check the guest list at the door." }
+                    { term: "Good morning", translation: "Buenos días", pronunciation: "/ɡʊd ˈmɔː.nɪŋ/", example: "Good morning! Welcome to Tutti Ricchi!" },
+                    { term: "Good afternoon", translation: "Buenas tardes", pronunciation: "/ɡʊd ˌɑːf.təˈnuːn/", example: "Good afternoon! How many people?" },
+                    { term: "Good evening", translation: "Buenas noches", pronunciation: "/ɡʊd ˈiːv.nɪŋ/", example: "Good evening! Table for two?" },
+                    { term: "Welcome to Tutti Ricchi!", translation: "¡Bienvenidos a Tutti Ricchi!", pronunciation: "/ˈwel.kəm tuː Tutti Ricchi/", example: "Welcome to Tutti Ricchi! This way, please." },
+                    { term: "How many people?", translation: "¿Cuántas personas?", pronunciation: "/haʊ ˈmen.i ˈpiː.pəl/", example: "Hello! How many people are in your group?" },
+                    { term: "Table for two?", translation: "¿Mesa para dos?", pronunciation: "/ˈteɪ.bəl fɔːr tuː/", example: "Table for two? This way, please." },
+                    { term: "This way, please.", translation: "Por aquí, por favor.", pronunciation: "/ðɪs weɪ pliːz/", example: "Your table is ready. This way, please." },
+                    { term: "Have a seat, please.", translation: "Tomen asiento, por favor.", pronunciation: "/hæv ə siːt pliːz/", example: "Here is your table. Have a seat, please." },
+                    { term: "Please", translation: "Por favor", pronunciation: "/pliːz/", example: "Follow me, please." },
+                    { term: "Thank you", translation: "Gracias", pronunciation: "/θæŋk juː/", example: "Thank you for visiting us." },
+                    { term: "You are welcome", translation: "De nada", pronunciation: "/juː ɑːr ˈwel.kəm/", example: "Thank you! - You are welcome." },
+                    { term: "Excuse me", translation: "Disculpe / Con permiso", pronunciation: "/ɪkˈskjuːz miː/", example: "Excuse me, here is the menu." }
                 ],
                 quiz: [
                     {
-                        question: "¿Cómo saludas formalmente a un cliente que acaba de entrar al restaurante?",
+                        question: "¿Cómo saludas formalmente por la mañana y das la bienvenida al restaurante?",
                         options: [
-                            "What do you want?",
-                            "Welcome! Do you have a reservation?",
-                            "Come in and sit down."
+                            "Good afternoon! Welcome!",
+                            "Good morning! Welcome to Tutti Ricchi!",
+                            "Excuse me, table for two?"
                         ],
                         answer: 1,
-                        explanation: "'Welcome! Do you have a reservation?' es el saludo clásico, profesional y el más cortés de la industria."
+                        explanation: "'Good morning! Welcome to Tutti Ricchi!' es el saludo de bienvenida ideal y correcto por la mañana."
                     },
                     {
-                        question: "¿Qué expresión usas para guiar a los clientes a su mesa?",
+                        question: "Si deseas guiar a los comensales a su mesa, ¿cuál de estas frases es la más indicada?",
                         options: [
-                            "Follow me, please.",
-                            "Go there.",
-                            "Sit at table two."
+                            "This way, please.",
+                            "Have a seat, please.",
+                            "How many people?"
                         ],
                         answer: 0,
-                        explanation: "'Follow me, please' es la frase perfecta para pedir amablemente que te acompañen a la mesa."
+                        explanation: "'This way, please' les indica cortésmente el camino hacia su mesa asignada."
                     }
                 ]
             },
             {
                 id: 2,
-                title: "Class 2: Taking Drink Orders",
-                subtitle: "Tomar órdenes de bebidas y aperitivos",
-                desc: "Aprende a ofrecer la carta de vinos y bebidas, tomar pedidos de cócteles y bebidas frías, y consultar las preferencias de agua.",
+                title: "Class 2: Explaining Soups & Drinks",
+                subtitle: "Explicación de Caldos y Bebidas",
+                desc: "Domina la explicación de los caldos tradicionales y las opciones de jugos naturales disponibles en el menú.",
                 grammar: {
-                    title: "Offering Beverages with 'Would you like...?' / Ofrecer cortésmente",
-                    desc: "Para ofrecer bebidas, la estructura reina es: <strong>'Would you like some...?'</strong> (¿Le gustaría un poco de...?) o <strong>'Can I get you something to drink?'</strong> (¿Puedo traerle algo de tomar?). Evita decir 'What do you want to drink?', pues suena agresivo."
+                    title: "Offering Soups and Juices / Ofrecer Entradas y Bebidas",
+                    desc: "Usa la pregunta <strong>'Would you like a soup?'</strong> (¿Le gustaría un caldo o sopa?) para iniciar la experiencia. Para preguntar qué desean beber, usa de manera directa y cortés: <strong>'To drink?'</strong> o <strong>'Would you like something to drink?'</strong>."
                 },
                 video: {
-                    title: "Video 02: Suggesting Drinks & Aperitifs / Sugerir bebidas a la mesa",
-                    duration: "09:30"
+                    title: "Video 02: Describing Soups and Local Juices / Caldos tradicionales y jugos",
+                    duration: "06:15"
                 },
                 vocabulary: [
-                    { term: "Still water", translation: "Agua sin gas", pronunciation: "/stɪl ˈwɔː.tər/", example: "Would you like still water or sparkling water?" },
-                    { term: "Sparkling water", translation: "Agua con gas", pronunciation: "/ˈspɑː.klɪŋ ˈwɔː.tər/", example: "A bottle of sparkling water with lemon, please." },
-                    { term: "On the rocks", translation: "Con hielo", pronunciation: "/ɒn ðə rɒks/", example: "I will have a whiskey on the rocks, please." },
-                    { term: "Wine list", translation: "Carta de vinos", pronunciation: "/waɪn lɪst/", example: "Here is our wine list. We have excellent local options." },
-                    { term: "Draft beer", translation: "Cerveza de barril / caña", pronunciation: "/drɑːft bɪər/", example: "We have local draft beer and imported beers in bottles." }
+                    { term: "Are you ready to order?", translation: "¿Están listos para ordenar?", pronunciation: "/ɑːr juː ˈred.i tuː ˈɔː.dər/", example: "Are you ready to order your drinks?" },
+                    { term: "Would you like a soup?", translation: "¿Le gustaría un caldo/sopa?", pronunciation: "/wʊd juː laɪk ə suːp/", example: "To start, would you like a soup?" },
+                    { term: "To drink?", translation: "¿Para tomar?", pronunciation: "/tuː drɪŋk/", example: "To drink? We have fresh fruit juices." },
+                    { term: "Bone Pork Soup", translation: "Caldo de hueso de cerdo", pronunciation: "/bəʊn pɔːk suːp/", example: "Our Bone Pork Soup is delicious." },
+                    { term: "Pork Trotter Soup", translation: "Caldo de patas de chancho", pronunciation: "/pɔːk ˈtrɒt.ər suːp/", example: "I highly recommend the Pork Trotter Soup." },
+                    { term: "Beef Trotter Soup", translation: "Caldo de patas de res", pronunciation: "/biːf ˈtrɒt.ər suːp/", example: "The Beef Trotter Soup is very popular today." },
+                    { term: "Beef Rib Minestrone", translation: "Menestrón de costilla de res", pronunciation: "/biːf rɪb ˌmɪn.ɪˈstrəʊ.ni/", example: "We have Beef Rib Minestrone as a special." },
+                    { term: "Chicken Giblet Soup", translation: "Aguado de pollo", pronunciation: "/ˈtʃɪk.ɪn ˈdʒɪb.lɪt suːp/", example: "Would you like our traditional Chicken Giblet Soup?" },
+                    { term: "Tripe Beef Soup", translation: "Caldo de mondongo", pronunciation: "/traɪp biːf suːp/", example: "The Tripe Beef Soup is served hot." },
+                    { term: "Lemon juice", translation: "Jugo de limón", pronunciation: "/ˈlem.ən dʒuːs/", example: "We have cold Lemon juice." },
+                    { term: "Passion fruit juice", translation: "Jugo de maracuyá", pronunciation: "/ˈpæʃ.ən fruːt dʒuːs/", example: "Our Passion fruit juice is very refreshing." },
+                    { term: "Blackberry juice", translation: "Jugo de mora", pronunciation: "/ˈblæk.bər.i dʒuːs/", example: "Would you like a glass of Blackberry juice?" }
                 ],
                 quiz: [
                     {
-                        question: "¿Cómo preguntas cortésmente al cliente si desea beber algo?",
+                        question: "¿Cómo preguntas al cliente en inglés si está listo para ordenar?",
                         options: [
-                            "Drink now please?",
-                            "Can I get you something to drink?",
-                            "What drink you buy?"
+                            "Would you like a soup?",
+                            "To drink?",
+                            "Are you ready to order?"
                         ],
-                        answer: 1,
-                        explanation: "'Can I get you something to drink?' es una pregunta estándar muy educada que demuestra excelente servicio."
+                        answer: 2,
+                        explanation: "'Are you ready to order?' es la pregunta clave para iniciar la toma del pedido."
                     },
                     {
-                        question: "Si el cliente te pide 'water with gas', ¿cuál es el término técnico e ideal que debes usar en inglés?",
+                        question: "Si un comensal te pide 'Pork Trotter Soup', ¿qué plato le vas a servir?",
                         options: [
-                            "Still water",
-                            "Sparkling water",
-                            "Tap water"
+                            "Caldo de patas de res",
+                            "Caldo de patas de chancho",
+                            "Caldo de hueso de cerdo"
                         ],
                         answer: 1,
-                        explanation: "'Sparkling water' es el término correcto para el agua carbonatada o agua con gas."
+                        explanation: "'Pork Trotter Soup' es la traducción exacta para el tradicional Caldo de patas de chancho."
                     }
                 ]
             },
             {
                 id: 3,
-                title: "Class 3: Explaining the Menu & Recommendations",
-                subtitle: "Explicar la carta y dar recomendaciones",
-                desc: "Domina el vocabulario de ingredientes comunes, niveles de picante, alérgenos importantes y cómo recomendar la especialidad del día.",
+                title: "Class 3: Explaining Main Dishes & Sides",
+                subtitle: "Explicación de Platos Fuertes y Guarniciones",
+                desc: "Aprende a presentar los secos tradicionales, las menestras, las proteínas al horno o fritas, y las guarniciones como los patacones.",
                 grammar: {
-                    title: "Recommending Food with 'I highly recommend...' / Recomendar platos",
-                    desc: "Utiliza el verbo 'highly recommend' para dirigir la atención del comensal hacia un plato premium: <strong>'I highly recommend the grilled salmon'</strong> (Le recomiendo ampliamente el salmón a la parrilla). Si un plato contiene alérgenos, usa: <strong>'It contains...'</strong> (Contiene...)."
+                    title: "Describing Plating and Sides / Describir Platos y Acompañados",
+                    desc: "Para describir cómo viene servido un plato fuerte, usa la frase: <strong>'It is served with...'</strong> (Viene servido con...). Para anunciar tus platos, usa la estructura simple: <strong>'We have...'</strong> (Tenemos...)."
                 },
                 video: {
-                    title: "Video 03: Describing Specials and Allergens / Especiales del día y alergias",
-                    duration: "10:45"
+                    title: "Video 03: Explaining Main Dishes & Sides / Secos, menestras y patacones",
+                    duration: "07:45"
                 },
                 vocabulary: [
-                    { term: "Daily special", translation: "Plato del día / Especial del día", pronunciation: "/ˈdeɪ.li ˈspeʃ.əl/", example: "Today's daily special is Roasted Garlic Chicken." },
-                    { term: "Allergy / Allergen", translation: "Alergia / Alérgeno", pronunciation: "/ˈæl.ə.dʒi/", example: "Please let me know if you have any food allergies." },
-                    { term: "Spicy", translation: "Picante", pronunciation: "/ˈspaɪ.si/", example: "This curry is very spicy. Is that okay for you?" },
-                    { term: "Dressing", translation: "Aderezo / Salsa para ensaladas", pronunciation: "/ˈdres.ɪŋ/", example: "What kind of dressing would you like for your salad?" },
-                    { term: "Vegetarian option", translation: "Opción vegetariana", pronunciation: "/ˌvedʒ.ɪˈteə.ri.ən ˈɒp.ʃən/", example: "We have a delicious vegetarian option with mushrooms." }
+                    { term: "For the main dish...", translation: "Para el plato fuerte...", pronunciation: "/fɔːr ðə meɪn dɪʃ/", example: "For the main dish, we have chicken or beef." },
+                    { term: "It is served with...", translation: "Viene servido con...", pronunciation: "/ɪt ɪz sɜːvd wɪð/", example: "It is served with rice and fried plantains." },
+                    { term: "We have...", translation: "Tenemos...", pronunciation: "/wiː hæv/", example: "We have beef rib stew and pork stew." },
+                    { term: "Beef Rib Stew with rice", translation: "Seco de costilla de res", pronunciation: "/biːf rɪb stjuː wɪð raɪs/", example: "I highly recommend the Beef Rib Stew with rice." },
+                    { term: "Beef Stew with rice", translation: "Seco de carne de res", pronunciation: "/biːf stjuː wɪð raɪs/", example: "Our Beef Stew with rice is ready." },
+                    { term: "Pork Stew with rice", translation: "Seco de chancho", pronunciation: "/pɔːk stjuː wɪð raɪs/", example: "We have Pork Stew with rice today." },
+                    { term: "Pork Trotters in Peanut Sauce", translation: "Patitas de chancho en salsa de maní", pronunciation: "/pɔːk ˈtrɒt.əz ɪn ˈpiː.nʌt sɔːs/", example: "Try the Pork Trotters in Peanut Sauce." },
+                    { term: "Beef tripe stew", translation: "Guatita (Guiso de mondongo)", pronunciation: "/biːf traɪp stjuː/", example: "The Beef tripe stew is an Ecuadorian classic." },
+                    { term: "Baked Chicken", translation: "Pollo al horno", pronunciation: "/beɪkt ˈtʃɪk.ɪn/", example: "We also have juicy Baked Chicken." },
+                    { term: "Fried Fish", translation: "Pescado frito", pronunciation: "/fraɪd fɪʃ/", example: "The Fried Fish is served with lemon." },
+                    { term: "Lentil stew", translation: "Menestra de lentejas", pronunciation: "/ˈlen.tɪl stjuː/", example: "You can choose Lentil stew as a side." },
+                    { term: "Bean stew", translation: "Menestra de frijoles", pronunciation: "/biːn stjuː/", example: "Our Bean stew is homemade." },
+                    { term: "Fried Green Plantains", translation: "Plátanos fritos (patacones/chifles)", pronunciation: "/fraɪd ɡriːn ˈplæn.tɪnz/", example: "It comes with crispy Fried Green Plantains." }
                 ],
                 quiz: [
                     {
-                        question: "¿Cómo describes el plato especial de la jornada?",
+                        question: "¿Cómo le explicas a un turista extranjero que el seco 'viene servido con' arroz y patacones?",
                         options: [
-                            "The special of today is...",
-                            "Today's daily special is...",
-                            "Today we cook..."
+                            "For the main dish, it is spicy.",
+                            "It is served with rice and fried green plantains.",
+                            "We have pork stew."
                         ],
                         answer: 1,
-                        explanation: "'Today's daily special is...' es la fórmula idónea para introducir la recomendación especial del restaurante."
+                        explanation: "'It is served with...' es la estructura reina para describir las guarniciones que acompañan un plato."
                     },
                     {
-                        question: "Si un plato contiene nueces y el cliente te dice que es alérgico a ellas, ¿cómo le adviertes?",
+                        question: "Si el comensal desea comer 'Guatita', ¿qué plato en inglés le recomendarás ordenar?",
                         options: [
-                            "No eat, it has danger nuts.",
-                            "Be careful, this dish contains nuts.",
-                            "Eat, it is sweet."
+                            "Beef tripe stew",
+                            "Pork Trotters in Peanut Sauce",
+                            "Beef Rib Stew with rice"
                         ],
-                        answer: 1,
-                        explanation: "'This dish contains nuts' explica con total claridad los ingredientes alérgicos de un plato."
+                        answer: 0,
+                        explanation: "Beef tripe stew es el término adecuado para describir la Guatita (guiso de mondongo) a comensales extranjeros."
                     }
                 ]
             },
             {
                 id: 4,
-                title: "Class 4: Taking Food Orders",
-                subtitle: "Tomar las comandas y términos de la carne",
-                desc: "Aprende a preguntar por los términos de cocción de la carne, acompañamientos (guarniciones) y cómo confirmar y cerrar la comanda correctamente.",
+                title: "Class 4: Taking the Order & Dealing with Questions",
+                subtitle: "Tomar el Pedido y Preguntas Comunes",
+                desc: "Aprende el proceso de tomar la orden formalmente, consultar alergias críticas (como el maní), responder preguntas de picante o ubicación del baño.",
                 grammar: {
-                    title: "Asking for meat temperatures & sides / Puntos de la carne",
-                    desc: "Para preguntar cómo desean la carne, usa la pregunta clave: <strong>'How would you like your steak cooked?'</strong> (¿Cómo prefiere el término de su carne?). Los términos principales son: <strong>rare</strong> (un cuarto), <strong>medium</strong> (término medio) y <strong>well-done</strong> (bien cocida)."
+                    title: "Confirming Orders & Core Questions / Preguntas de Alérgenos e Indicaciones",
+                    desc: "Es fundamental consultar siempre sobre alergias en platos que llevan maní o mariscos diciendo: <strong>'Do you have any allergies?'</strong>. Si necesitas tiempo para buscar ayuda, usa la frase salvavidas: <strong>'One moment, please'</strong>."
                 },
                 video: {
-                    title: "Video 04: Order-taking & Steak Doneness / Tomando comandas de platos fuertes",
-                    duration: "11:20"
+                    title: "Video 04: Taking Food Orders & Allergen Checks / Tomar pedidos y control de alérgenos",
+                    duration: "08:30"
                 },
                 vocabulary: [
-                    { term: "Main course", translation: "Plato principal / plato fuerte", pronunciation: "/meɪn kɔːs/", example: "What would you like for your main course?" },
-                    { term: "Appetizer / Starter", translation: "Entrada / Aperitivo inicial", pronunciation: "/ˈæp.ə.taɪ.zər/", example: "Would you like to start with an appetizer?" },
-                    { term: "Side dish / Sides", translation: "Acompañamiento / Guarnición", pronunciation: "/saɪd dɪʃ/", example: "You can choose one side dish: French fries or vegetables." },
-                    { term: "Medium-rare", translation: "Término medio a tres cuartos (carne)", pronunciation: "/ˈmiː.di.əm reər/", example: "I want my ribeye steak cooked medium-rare, please." },
-                    { term: "To order", translation: "Pedir / Ordenar", pronunciation: "/tuː ˈɔː.dər/", example: "Are you ready to order?" }
+                    { term: "Are you ready to order?", translation: "¿Están listos para ordenar?", pronunciation: "/ɑːr juː ˈred.i tuː ˈɔː.dər/", example: "Are you ready to order now?" },
+                    { term: "Do you have any allergies?", translation: "¿Tiene alguna alergia?", pronunciation: "/duː juː hæv ˈen.i ˈæl.ə.dʒiz/", example: "Do you have any allergies? This dish has peanuts." },
+                    { term: "Anything else?", translation: "¿Algo más?", pronunciation: "/ˈen.i.θɪŋ els/", example: "Would you like anything else to eat?" },
+                    { term: "For you?", translation: "¿Para usted?", pronunciation: "/fɔːr juː/", example: "And for you, sir?" },
+                    { term: "Perfect choice!", translation: "¡Excelente elección!", pronunciation: "/ˈpɜː.fɪkt tʃɔɪs/", example: "Perfect choice! The Guatita is delicious." },
+                    { term: "How much is it?", translation: "¿Cuánto cuesta? / ¿Qué precio tiene?", pronunciation: "/haʊ mʌtʃ ɪz ɪt/", example: "The customer asks: 'How much is it?'" },
+                    { term: "Is it spicy?", translation: "¿Es picante?", pronunciation: "/ɪz ɪt ˈspaɪ.si/", example: "Excuse me, is it spicy?" },
+                    { term: "Does it have peanuts?", translation: "¿Tiene maní? (Vital para la Guatita o las Patitas)", pronunciation: "/dʌz ɪt hæv ˈpiː.nʌts/", example: "Does it have peanuts? I am allergic." },
+                    { term: "Does it have seafood?", translation: "¿Tiene mariscos?", pronunciation: "/dʌz ɪt hæv ˈsiː.fuːd/", example: "The tourist asks: Does it have seafood?" },
+                    { term: "Yes, of course.", translation: "Sí, por supuesto.", pronunciation: "/jes ɒv kɔːs/", example: "Yes, of course, I will bring it." },
+                    { term: "No, it is not spicy.", translation: "No, no es picante.", pronunciation: "/nəʊ ɪt ɪz nɒt ˈspaɪ.si/", example: "No, it is not spicy. It is mild." },
+                    { term: "One moment, please.", translation: "Un momento, por favor. (Frase salvavidas)", pronunciation: "/wʌn ˈməʊ.mənt pliːz/", example: "One moment, please. Let me check with the chef." },
+                    { term: "Where is the restroom?", translation: "¿Dónde está el baño?", pronunciation: "/weər ɪz ðə ˈrest.ruːm/", example: "Where is the restroom, please?" },
+                    { term: "Over there.", translation: "Por allá.", pronunciation: "/ˈəʊ.və ðeər/", example: "The restroom is over there." },
+                    { term: "It is in the back.", translation: "Está al fondo / en la parte de atrás.", pronunciation: "/ɪt ɪz ɪn ðə bæk/", example: "The restroom? It is in the back." }
                 ],
                 quiz: [
                     {
-                        question: "¿Qué pregunta utilizas para indagar sobre la cocción de la carne de un comensal?",
+                        question: "¿Qué pregunta clave debes hacer antes de servir un plato con maní (como la Guatita o las Patitas) para evitar emergencias médicas?",
                         options: [
-                            "How do you cook your meat?",
-                            "How would you like your steak cooked?",
-                            "Do you like red color?"
+                            "Anything else?",
+                            "Do you have any allergies?",
+                            "Is it spicy?"
                         ],
                         answer: 1,
-                        explanation: "'How would you like your steak cooked?' es la frase estándar y correcta en hostelería internacional."
+                        explanation: "Preguntar 'Do you have any allergies?' es de vital importancia, especialmente al servir platos con maní o mariscos."
                     },
                     {
-                        question: "¿Qué significa el término de cocción 'rare' en inglés?",
+                        question: "Si un cliente te hace una pregunta compleja que no logras comprender, ¿cuál es tu 'frase salvavidas' para ir por ayuda?",
                         options: [
-                            "Bien cocido y seco.",
-                            "Muy poco cocido / Término un cuarto (con centro rojo).",
-                            "Término medio."
+                            "One moment, please.",
+                            "Perfect choice!",
+                            "Where is the restroom?"
                         ],
-                        answer: 1,
-                        explanation: "'Rare' hace referencia a la carne roja, sellada por fuera y jugosa / poco cocida por dentro."
+                        answer: 0,
+                        explanation: "'One moment, please' te da el tiempo necesario para buscar al administrador o a un compañero bilingüe sin sonar descortés."
                     }
                 ]
             },
             {
                 id: 5,
-                title: "Class 5: Serving Food & Checking In",
-                subtitle: "Servir los platos y comprobar la satisfacción",
-                desc: "Aprende a entregar los platos correctos al comensal idóneo, desear un buen provecho y volver a la mesa para comprobar que todo esté excelente.",
+                title: "Class 5: Talking About Sizes and Food Ingredients",
+                subtitle: "Hablando sobre Tamaños e Ingredientes de la Comida",
+                desc: "Aprende a describir las porciones (pequeña, mediana, grande), jarras de jugo, proteínas principales y acompañantes de la región.",
                 grammar: {
-                    title: "Polite expressions during service & check-ins / Servicio y Seguimiento",
-                    desc: "Al entregar la comida, usa la cortesía clásica: <strong>'Enjoy your meal!'</strong> (¡Que disfrute su comida! / Buen provecho). Después de unos minutos, acércate a la mesa y comprueba el servicio preguntando: <strong>'Is everything tasting okay?'</strong>."
+                    title: "Expressing Portions & regional ingredients / Tamaños y Alimentos",
+                    desc: "Ofrece porciones usando adjetivos simples: <strong>'Small, Medium, Large'</strong>. Para ofrecer bebidas familiares o grupales, utiliza el término: <strong>'A pitcher of juice'</strong> (Una jarra de jugo). Al listar proteínas de base, usa términos precisos como <strong>pork</strong> (cerdo) o <strong>beef</strong> (res)."
                 },
                 video: {
-                    title: "Video 05: Serving Plateways & Customer Satisfaction / Servir y confirmar satisfacción",
-                    duration: "09:00"
+                    title: "Video 05: Describing Sizes and Local Staples / Tamaños e ingredientes regionales",
+                    duration: "07:10"
                 },
                 vocabulary: [
-                    { term: "Enjoy your meal", translation: "¡Buen provecho! / Disfrute su comida", pronunciation: "/ɪnˈdʒɔɪ jɔːr miːl/", example: "Here is your grilled sea bass. Enjoy your meal!" },
-                    { term: "Napkin", translation: "Servilleta", pronunciation: "/ˈnæp.kɪn/", example: "Excuse me, could we have extra napkins, please?" },
-                    { term: "Cutlery / Silverware", translation: "Cubiertos", pronunciation: "/ˈkʌt.lər.i/", example: "I will bring you clean cutlery for your main course." },
-                    { term: "Refill", translation: "Rellenar la copa / Refrescar la bebida", pronunciation: "/ˈriː.fɪl/", example: "Would you like a refill on your soda?" },
-                    { term: "Is everything okay?", translation: "¿Está todo bien? / ¿Todo correcto?", pronunciation: "/ɪz ˈev.ri.θɪŋ ˌəʊˈkeɪ/", example: "Is everything tasting okay with your food?" }
+                    { term: "Small", translation: "Pequeño / Porción pequeña", pronunciation: "/smɔːl/", example: "We have small and large plates." },
+                    { term: "Medium", translation: "Mediano", pronunciation: "/ˈmiː.di.əm/", example: "Would you like a medium portion?" },
+                    { term: "Large", translation: "Grande", pronunciation: "/lɑːdʒ/", example: "A large portion is perfect for sharing." },
+                    { term: "A pitcher of juice", translation: "Una jarra de jugo", pronunciation: "/ə ˈpɪtʃ.ər ɒv dʒuːs/", example: "Would you like a glass or a pitcher of juice?" },
+                    { term: "Pork", translation: "Carne de cerdo / Chancho", pronunciation: "/pɔːk/", example: "Pork is the main protein in this soup." },
+                    { term: "Beef", translation: "Carne de res", pronunciation: "/biːf/", example: "We use high-quality beef for our stews." },
+                    { term: "Chicken", translation: "Pollo", pronunciation: "/ˈtʃɪk.ɪn/", example: "The Chicken Giblet Soup is very traditional." },
+                    { term: "Fish", translation: "Pescado", pronunciation: "/fɪʃ/", example: "We have fresh fried fish today." },
+                    { term: "Rice", translation: "Arroz", pronunciation: "/raɪs/", example: "Every stew is served with warm rice." },
+                    { term: "Beans", translation: "Frijoles / Menestra", pronunciation: "/biːnz/", example: "Do you prefer beans or lentils?" },
+                    { term: "Peanuts", translation: "Maní", pronunciation: "/ˈpiː.nʌts/", example: "The sauce contains ground peanuts." },
+                    { term: "Cheese", translation: "Queso", pronunciation: "/tʃiːz/", example: "We put fresh cheese on the sides." }
                 ],
                 quiz: [
                     {
-                        question: "¿Qué frase usas amablemente al colocar el plato del cliente sobre la mesa?",
+                        question: "Si un cliente te pide 'a pitcher of juice', ¿qué debes traer a la mesa?",
                         options: [
-                            "Eat now.",
-                            "Enjoy your meal!",
-                            "Here is food."
+                            "Un vaso pequeño de jugo",
+                            "Una porción mediana de caldo",
+                            "Una jarra de jugo"
                         ],
-                        answer: 1,
-                        explanation: "'Enjoy your meal!' es el equivalente más natural y profesional al español 'buen provecho'."
+                        answer: 2,
+                        explanation: "'A pitcher' significa una jarra, ideal para compartir en grupos."
                     },
                     {
-                        question: "¿De qué forma preguntas a la mesa si la comida está a su total satisfacción?",
+                        question: "¿Qué término en inglés representa la guarnición de 'Frijoles'?",
                         options: [
-                            "Is everything tasting okay?",
-                            "Do you eat everything?",
-                            "Food okay or bad?"
+                            "Beans",
+                            "Rice",
+                            "Peanuts"
                         ],
                         answer: 0,
-                        explanation: "'Is everything tasting okay?' es una frase sumamente amigable y sutil para comprobar la satisfacción en mesa."
+                        explanation: "'Beans' hace referencia a los frijoles o la menestra."
                     }
                 ]
             },
             {
                 id: 6,
-                title: "Class 6: Handling Complaints & Mistakes",
-                subtitle: "Manejar quejas y platos equivocados",
-                desc: "Aprende el vocabulario crucial para disculparte cordialmente en inglés, proponer soluciones y mantener la calma ante un comensal descontento.",
+                title: "Class 6: Paying and Saying Goodbye",
+                subtitle: "Pagando y Despidiéndose",
+                desc: "Aprende a entregar la cuenta, consultar el método de pago, entregar el cambio y despedir cordialmente a tus clientes de Tutti Ricchi.",
                 grammar: {
-                    title: "Professional Apologies and Instant Solutions / Disculpas y soluciones",
-                    desc: "Cuando ocurra un error, nunca te justifiques. Ofrece disculpas sinceras: <strong>'I do apologize for that'</strong> (Le pido una sincera disculpa por eso). Luego, ofrece una solución inmediata en tiempo futuro: <strong>'I will bring you a new one right away'</strong> (Le traeré uno nuevo de inmediato)."
+                    title: "Processing Payments & Warm Farewells / Cobros y Despedida",
+                    desc: "Al momento del cobro, consulta educadamente: <strong>'How would you like to pay?'</strong>. Concluye la interacción con deseos cálidos y amigables: <strong>'Thank you for coming!'</strong> o <strong>'Come back soon!'</strong>."
                 },
                 video: {
-                    title: "Video 06: Solving Customer Complaints / Resolución de quejas y errores de cocina",
-                    duration: "12:15"
+                    title: "Video 06: Billing & Friendly Goodbyes / Procesar pagos y despedirse",
+                    duration: "06:40"
                 },
                 vocabulary: [
-                    { term: "Apologize", translation: "Pedir disculpas / Disculparse", pronunciation: "/əˈpɒl.ə.dʒaɪz/", example: "I apologize for the delay, our kitchen is very busy tonight." },
-                    { term: "Cold food", translation: "Comida fría", pronunciation: "/kəʊld fuːd/", example: "My soup is completely cold. Could you heat it up?" },
-                    { term: "Wrong order", translation: "Orden equivocada", pronunciation: "/rɒŋ ˈɔː.dər/", example: "I think this is the wrong order. I ordered steak, not chicken." },
-                    { term: "Right away", translation: "Inmediatamente / De inmediato", pronunciation: "/raɪt əˈweɪ/", example: "I will change this plate right away. Do not worry." },
-                    { term: "On the house", translation: "Cortesía de la casa / Gratis", pronunciation: "/ɒn ðə haʊs/", example: "Your desserts are on the house to make up for the mistake." }
+                    { term: "The bill, please", translation: "La cuenta, por favor", pronunciation: "/ðə bɪl pliːz/", example: "The customer says: 'The bill, please!'" },
+                    { term: "How would you like to pay?", translation: "¿Cómo le gustaría pagar?", pronunciation: "/haʊ wʊd juː laɪk tuː peɪ/", example: "How would you like to pay? Cash or card?" },
+                    { term: "Cash or credit card?", translation: "¿Efectivo o tarjeta de crédito?", pronunciation: "/kæʃ ɔːr ˈkred.ɪt kɑːd/", example: "Will you pay by cash or credit card?" },
+                    { term: "Here is your receipt", translation: "Aquí tiene su recibo", pronunciation: "/hɪər ɪz jɔːr rɪˈsiːt/", example: "Here is your receipt. Thank you!" },
+                    { term: "Here is your change", translation: "Aquí tiene su cambio / vuelto", pronunciation: "/hɪər ɪz jɔːr tʃeɪndʒ/", example: "You paid with cash, so here is your change." },
+                    { term: "Thank you for coming!", translation: "¡Gracias por venir!", pronunciation: "/θæŋk juː fɔːr ˈkʌm.ɪŋ/", example: "Thank you for coming! We hope you enjoyed Tutti Ricchi!" },
+                    { term: "Come back soon!", translation: "¡Vuelva pronto!", pronunciation: "/kʌm bæk suːn/", example: "Goodbye! Come back soon!" },
+                    { term: "Have a great day!", translation: "¡Que tenga un excelente día!", pronunciation: "/hæv ə ɡreɪt deɪ/", example: "Thank you for your visit. Have a great day!" },
+                    { term: "Have a safe trip!", translation: "¡Que tenga un buen viaje!", pronunciation: "/hæv ə seɪf trɪp/", example: "Safe travels! Have a safe trip back home!" },
+                    { term: "You are welcome!", translation: "¡Un placer! / De nada", pronunciation: "/juː ɑːr ˈwel.kəm/", example: "Thank you for the wonderful service! - You are welcome!" }
                 ],
                 quiz: [
                     {
-                        question: "Si traes un plato equivocado por error, ¿cómo te disculpas formalmente?",
+                        question: "¿Cómo preguntas cortésmente al cliente qué método de pago prefiere usar?",
                         options: [
-                            "Sorry, the kitchen is bad.",
-                            "I apologize for the mistake. I will change it right away.",
-                            "You can eat this one too."
+                            "The bill, please.",
+                            "How would you like to pay?",
+                            "Here is your change."
                         ],
                         answer: 1,
-                        explanation: "Expresar 'I apologize for the mistake' y proponer cambiarlo 'right away' es la mejor respuesta profesional."
+                        explanation: "'How would you like to pay?' es la consulta formal para invitar al cliente a decidir cómo liquidar su cuenta."
                     },
                     {
-                        question: "¿Qué significa que un artículo del restaurante sea 'on the house'?",
+                        question: "Si el cliente te paga con un billete y debes entregarle su vuelto, ¿qué frase utilizas?",
                         options: [
-                            "Que el cliente debe consumirlo fuera del local.",
-                            "Que es gratis, cortesía de la casa.",
-                            "Que tiene un costo de servicio adicional."
+                            "Here is your receipt",
+                            "Here is your change",
+                            "Thank you for coming!"
                         ],
                         answer: 1,
-                        explanation: "En hostelería, 'on the house' significa que el restaurante invita y el cliente no paga por ese producto."
+                        explanation: "'Here is your change' significa 'Aquí tiene su cambio/vuelto'."
                     }
                 ]
             }
@@ -909,9 +966,7 @@
                 3: { gradient: 'from-emerald-400 via-teal-500 to-emerald-600', text: 'text-teal-600', bg: 'bg-teal-50' },
                 4: { gradient: 'from-rose-400 via-pink-500 to-red-500', text: 'text-rose-600', bg: 'bg-rose-50' },
                 5: { gradient: 'from-purple-400 via-purple-600 to-pink-600', text: 'text-purple-600', bg: 'bg-purple-50' },
-                6: { gradient: 'from-amber-400 via-yellow-500 to-amber-600', text: 'text-yellow-600', bg: 'bg-yellow-50' },
-                7: { gradient: 'from-cyan-400 via-cyan-600 to-blue-600', text: 'text-cyan-600', bg: 'bg-cyan-50' },
-                8: { gradient: 'from-red-400 via-orange-500 to-red-600', text: 'text-red-600', bg: 'bg-red-50' }
+                6: { gradient: 'from-amber-400 via-yellow-500 to-amber-600', text: 'text-yellow-600', bg: 'bg-yellow-50' }
             };
 
             classesData.forEach(cls => {
@@ -1120,9 +1175,7 @@
                 'from-emerald-500 to-teal-600',
                 'from-rose-500 to-pink-600',
                 'from-purple-500 to-pink-600',
-                'from-amber-400 to-orange-500',
-                'from-cyan-500 to-blue-600',
-                'from-red-500 to-orange-600'
+                'from-amber-400 to-orange-500'
             ];
             const activeGrad = colorGradients[classId - 1] || 'from-orange-500 to-red-600';
 
@@ -1178,7 +1231,7 @@
             } else {
                 step1StatusText.textContent = "Pendiente de estudio";
                 completeStep1Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2";
-                completeStep1Btn.innerHTML = `<i class="fa-solid fa-check"></i> Marcar como Aprendido / Done`;
+                completeStep1Btn.innerHTML = `<i class="fa-solid fa-check"></i> Done / Marcar como Aprendido`;
             }
 
             const step2StatusText = document.getElementById('step2Status');
