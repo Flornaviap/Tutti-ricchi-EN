@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English for Waiters - Plataforma de Aprendizaje ESP</title>
+    <!-- Tailwind CSS para el diseño responsivo moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Poppins para un diseño alegre y profesional -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos de alta calidad -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Reemplazo de orbes pesados con un degradado de capas estáticas de alto rendimiento */
+            background: 
+                radial-gradient(circle at 5% 15%, rgba(255, 126, 95, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 95% 85%, rgba(0, 114, 255, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.04) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(255, 245, 230, 0.98) 0%, rgba(240, 245, 255, 0.98) 100%);
+            background-attachment: fixed;
+        }
+        h1, h2, h3, h4, h5, .font-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Efecto 3D optimizado para las Flashcards de Vocabulario */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+            will-change: transform; /* Avisa al navegador para optimizar la aceleración de hardware */
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* Transiciones fluidas y ligeras */
+        .transition-all-custom {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background-color 0.2s ease;
+        }
+        /* Animación para tarjetas bloqueadas (se ejecuta solo al hacer click) */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        .shake-element {
+            animation: shake 0.35s ease-in-out;
+        }
+        /* Indicador sutil de clase activa sin animación infinita pesada */
+        .active-border {
+            border-color: #f97316;
+            box-shadow: 0 4px 20px -2px rgba(249, 115, 22, 0.15);
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Canvas optimizado para el motor de Confeti -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+    <!-- Modal Personalizado para alertas y confirmaciones sin usar 'alert' ni 'confirm' -->
+    <div id="customModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-orange-100 transform scale-95 transition-transform duration-200" id="customModalCard">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl flex-shrink-0 shadow-inner" id="customModalIcon">
+                    <i class="fa-solid fa-circle-question"></i>
+                </div>
+                <div>
+                    <h4 class="text-lg font-black text-slate-950" id="customModalTitle">Confirmación</h4>
+                    <p class="text-xs text-slate-500" id="customModalSubtitle">Por favor verifica los detalles</p>
+                </div>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-6" id="customModalText">¿Estás seguro de realizar esta acción?</p>
+            <div class="flex items-center justify-end gap-3" id="customModalButtons">
+                <button id="customModalCancelBtn" class="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 transition-colors">Cancelar / Cancel</button>
+                <button id="customModalConfirmBtn" class="px-5 py-2.5 rounded-xl text-xs font-black bg-orange-600 hover:bg-orange-700 text-white shadow-md transition-colors">Aceptar / Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cabecera Principal -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-orange-100 sticky top-0 z-40 shadow-sm transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 group">
+                <div class="bg-gradient-to-tr from-amber-500 via-orange-600 to-red-500 text-white p-3 rounded-2xl shadow-md transition-transform duration-200 group-hover:scale-105">
+                    <i class="fa-solid fa-utensils text-2xl"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-black text-orange-600 tracking-widest uppercase block">English for Waiters</span>
+                    <h1 class="text-xl font-black text-slate-950 leading-tight">English Platform</h1>
+                </div>
+            </div>
+            
+            <!-- Nombre de estudiante editable -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex flex-col text-right">
+                    <span class="text-xs text-orange-500 font-bold uppercase tracking-wider">Camarero(a) en Práctica</span>
+                    <input type="text" id="studentNameInput" value="Personal de Servicio" 
+                           class="text-sm font-extrabold text-slate-800 bg-transparent border-b-2 border-dashed border-orange-300 focus:border-orange-600 focus:outline-none text-right px-1 w-56"
+                           title="Haz clic para personalizar tu nombre" />
+                </div>
+                <div class="relative w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-500 via-orange-600 to-red-500 flex items-center justify-center text-white font-black text-xl shadow-md border-2 border-white transform hover:scale-105 transition-transform duration-200">
+                    <span id="studentAvatar">C</span>
+                    <div class="absolute -bottom-1 -right-1 bg-emerald-500 border-2 border-white w-4 h-4 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        
+        <!-- Pantalla de Inicio / Dashboard -->
+        <div id="dashboardSection" class="space-y-10">
+            <!-- Banner de Bienvenida -->
+            <div class="bg-gradient-to-r from-slate-900 via-orange-950 to-red-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="bg-gradient-to-r from-amber-500 to-red-500 text-white text-[11px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-block border border-white/20 shadow-sm">
+                        ¡Aprende inglés para dar un servicio de 5 estrellas!
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                        Welcome, <span id="welcomeStudentName" class="bg-gradient-to-r from-amber-300 via-orange-400 to-red-300 bg-clip-text text-transparent">Personal de Servicio</span>! 🍽️
+                    </h2>
+                    <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
+                        Aprende el inglés práctico necesario para comunicarte con comensales extranjeros. 
+                    <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
+                        **Regla de oro**
+                    <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
+                        Debes completar el 100% de cada clase (Vocabulario/Gramática, ver el Video y aprobar el Test con el 100%) para poder desbloquear la siguiente lección. Let's start!
+                    </p>
+                    
+                    <!-- Barra de progreso general del curso -->
+                    <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-inner mt-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs sm:text-sm font-extrabold text-orange-200 uppercase tracking-widest">Progreso total del entrenamiento / Total Course Progress</span>
+                            <span class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5" id="overallPercent">
+                                <i class="fa-solid fa-trophy"></i> 0% Completado
+                            </span>
+                        </div>
+                        <div class="w-full bg-slate-950/80 rounded-full h-4 overflow-hidden p-0.5 border border-white/5">
+                            <div id="overallProgressBar" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-2.5 rounded-full transition-all duration-700 shadow-sm" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between items-center mt-3 text-[11px] text-orange-300 font-bold">
+                            <span id="overallClassCount">0 de 8 Clases superadas</span>
+                            <button id="resetProgressBtn" class="hover:text-red-400 transition-colors flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                          </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa de aprendizaje (Grilla de clases) -->
+            <div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-orange-600"></i>
+                            Ruta del Aprendizaje / Learning Map
+                        </h3>
+                        <p class="text-slate-500 text-sm mt-1">Completa las clases en orden secuencial para desbloquear las siguientes.</p>
+                    </div>
+                    <div class="mt-3 md:mt-0 bg-orange-50 border border-orange-100 px-4 py-2 rounded-xl text-xs font-bold text-orange-700 flex items-center gap-2">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <span>Progreso Lineal Activo</span>
+                    </div>
+                </div>
+                
+                <div id="classGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Las clases se cargarán dinámicamente con JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Seccion de detalle de cada clase -->
+        <div id="classDetailSection" class="hidden space-y-8">
+            <!-- Botón Volver -->
+            <button onclick="showDashboard()" class="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-bold transition-all-custom group bg-white hover:bg-orange-50 px-5 py-3 rounded-2xl shadow-sm border border-slate-200">
+                <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                Volver al Panel de Clases / Back to Classes
+            </button>
+
+            <!-- Cabecera Dinámica de la Clase Activa -->
+            <div id="classHeaderArea" class="bg-white/95 border border-orange-100 rounded-3xl p-6 sm:p-8 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <!-- Se poblará dinámicamente -->
+            </div>
+
+            <!-- ACTIVIDADES INTERNAS (LIBRES DE ORDEN) -->
+            <div class="space-y-12">
+                
+                <!-- PASO 1: VOCABULARIO Y GRAMÁTICA -->
+                <div class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-600 text-white flex items-center justify-center text-xl shadow-md">
+                            <span class="font-extrabold text-base">01</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-black text-slate-900">Vocabulary & Grammar / Vocabulario y Gramática Práctica</h4>
+                            <p class="text-xs text-slate-500">Aprende las palabras clave de servicio y cómo estructurar frases útiles con ejemplos en audio.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Flashcard Vocabulario 3D (Izquierda) -->
+                        <div class="flex flex-col items-center justify-center bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60">
+                            <span class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Flashcards (Haz clic para voltear)</span>
+                            <div class="w-full max-w-sm h-64 perspective-1000 cursor-pointer" onclick="flipCard()">
+                                <div id="vocabularyCard" class="w-full h-full relative preserve-3d transition-transform duration-300 ease-out">
+                                    <!-- Cara Frontal (Inglés) -->
+                                    <div class="absolute inset-0 bg-gradient-to-br from-orange-600 via-orange-700 to-red-800 text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg backface-hidden border border-orange-400/20">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-[10px] font-bold uppercase tracking-widest text-orange-200">INGLÉS / ENGLISH</span>
+                                            <button class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors" onclick="speakTerm(event)" title="Escuchar pronunciación">
+                                                <i class="fa-solid fa-volume-high text-white"></i>
+                                            </button>
+                                        </div>
+                                        <div class="text-center my-auto">
+                                            <h5 id="vocabTerm" class="text-2xl font-black tracking-tight mb-1">Welcome</h5>
+                                            <p class="text-xs text-orange-200 italic" id="vocabPronunciation">/ˈwel.kəm/</p>
+                                        </div>
+                                        <div class="text-center text-[10px] text-orange-300 flex items-center justify-center gap-2 bg-orange-950/40 py-2 rounded-xl border border-orange-500/15">
+                                            <span>Toca para ver el significado en Español</span>
+                                            <i class="fa-solid fa-rotate"></i>
+                                        </div>
+                                    </div>
+                                    <!-- Cara Trasera (Español + Ejemplo) -->
+                                    <div class="absolute inset-0 bg-slate-950 text-white rounded-2xl p-6 flex flex-col justify-between shadow-lg backface-hidden rotate-y-180 border border-yellow-500/20">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-[10px] font-semibold uppercase tracking-widest text-slate-400">ESPAÑOL / SPANISH</span>
+                                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-amber-400">
+                                                <i class="fa-solid fa-lightbulb text-sm"></i>
+                                            </div>
+                                        </div>
+                                        <div class="my-auto space-y-2 text-left">
+                                            <div>
+                                                <span class="text-[9px] text-slate-500 block uppercase font-bold tracking-wider">Traducción</span>
+                                                <p id="vocabTranslation" class="text-lg font-extrabold text-amber-300">Bienvenido / Dar la bienvenida</p>
+                                            </div>
+                                            <div>
+                                                <span class="text-[9px] text-slate-500 block uppercase font-bold tracking-wider">Ejemplo en Servicio</span>
+                                                <p id="vocabExample" class="text-xs text-slate-200 italic leading-relaxed">"Welcome to our restaurant! Let me show you to your table."</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-center text-[10px] text-slate-400 flex items-center justify-center gap-1.5 bg-white/5 py-2 rounded-xl">
+                                            <span>Toca para ver en Inglés</span>
+                                            <i class="fa-solid fa-rotate"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 mt-4">
+                                <button onclick="navigateVocab(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors">
+                                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                                </button>
+                                <span class="text-xs font-extrabold text-slate-600 bg-white px-3 py-1.5 rounded-full border border-slate-200" id="vocabIndex">1 de 5</span>
+                                <button onclick="navigateVocab(1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors">
+                                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Gramática Práctica (Derecha) -->
+                        <div class="flex flex-col justify-between bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60">
+                            <div class="space-y-4">
+                                <span class="text-xs font-black text-slate-400 uppercase tracking-widest block">Grammar in Action / Estructura del Idioma</span>
+                                <div class="bg-white p-5 rounded-2xl border border-orange-50/85 shadow-sm space-y-3">
+                                    <h5 class="text-base font-black text-orange-950 flex items-center gap-2" id="grammarTitle">
+                                        <i class="fa-solid fa-book-bookmark text-orange-500"></i> Tema de Gramática
+                                    </h5>
+                                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" id="grammarDescription">Explicación detallada de la gramática en español...</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Botón de check de finalización de Vocabulario -->
+                            <div class="mt-6 pt-4 border-t border-slate-200/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="text-center sm:text-left">
+                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Progreso de Vocabulario</span>
+                                    <p class="text-xs text-slate-600 font-extrabold" id="step1Status">Pendiente de revisión</p>
+                                </div>
+                                <button id="completeStep1Btn" onclick="markStep1Complete()" class="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-check"></i> Done/ Marcar como Aprendido
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 2: CLASE GRABADA / VIDEO SESIÓN -->
+                <div id="step2Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-400 to-blue-500 text-white flex items-center justify-center text-xl shadow-md">
+                            <span class="font-extrabold text-base">02</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-black text-slate-900">Video de la Clase / Video Lecture</h4>
+                            <p class="text-xs text-slate-500">Listen and observe /Escucha y observa .</p>
+                        </div>
+                    </div>
+
+                    <!-- Reproductor de Video Simulado Inteligente -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
+                        <div class="lg:col-span-2 space-y-4">
+                            <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800 flex flex-col justify-end group">
+                                <!-- Fondo simulando miniatura -->
+                                <div class="absolute inset-0 bg-cover bg-center opacity-40" id="videoThumbnail" style="background-image: url('https://placehold.co/800x450/1e1b4b/ffffff?text=ESP+Class+Video');"></div>
+                                
+                                <!-- Botón central de Play Gigante -->
+                                <button onclick="toggleMockVideo()" id="videoBigPlayBtn" class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-orange-600 text-white flex items-center justify-center text-2xl shadow-md hover:bg-yellow-600 hover:scale-105 transition-transform z-10">
+                                    <i class="fa-solid fa-play ml-1" id="bigPlayIcon"></i>
+                                </button>
+
+                                <!-- Controles del Reproductor -->
+                                <div class="bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 w-full relative z-10 opacity-95 flex flex-col gap-2">
+                                    <!-- Barra de progreso simulada -->
+                                    <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative" id="videoProgressTrack" onclick="seekVideo(event)">
+                                        <div class="bg-orange-500 h-full w-0" id="videoProgressBar"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-white text-xs">
+                                        <div class="flex items-center gap-4">
+                                            <button onclick="toggleMockVideo()" class="hover:text-orange-400 transition-colors">
+                                                <i class="fa-solid fa-play" id="playPauseIcon"></i>
+                                            </button>
+                                            <span id="videoTimeText">0:00 / 10:00</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                            <div class="w-16 bg-white/20 h-1 rounded-full overflow-hidden">
+                                                <div class="bg-white h-full w-4/5"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estado y control de progreso del paso 2 -->
+                        <div class="flex flex-col justify-between bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60">
+                            <div class="space-y-4">
+                                <span class="text-xs font-black text-slate-400 uppercase tracking-widest block">Información de la Clase</span>
+                                <div class="space-y-2">
+                                    <h5 class="text-sm font-black text-slate-900" id="videoClassTitle">Título de la video clase</h5>
+                                    <span class="inline-flex items-center gap-1 text-[11px] font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-lg">
+                                        <i class="fa-regular fa-clock"></i> <span id="videoClassDuration">10:00 min de duración</span>
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Watch the first class here and then mark the video as "Complete" / Mira el vide y luego marca el video como completado cuando termines.
+                                </p>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-slate-200/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="text-center sm:text-left">
+                                    <span class="text-[10px] font-bold text-slate-400 block uppercase">Progreso de Video</span>
+                                    <p class="text-xs text-slate-600 font-extrabold" id="step2Status">Pendiente de visualización</p>
+                                </div>
+                                <button id="completeStep2Btn" onclick="markStep2Complete()" class="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-square-check"></i> Marcar Video como Visto / Watched
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 3: MINI-TEST INTEGRADO DE LA CLASE -->
+                <div id="step3Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-red-500 text-white flex items-center justify-center text-xl shadow-md">
+                            <span class="font-extrabold text-base">03</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-black text-slate-900">Prueba tu Conocimiento / Mini-Test</h4>
+                            <p class="text-xs text-slate-500">Show what you learned ¡Get the 100% to unlock the next level / Demuestra lo que has aprendido ¡Consigue el 100% para desbloquear el siguiente nivel!</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
+                        <!-- El Cuestionario de Preguntas (Izquierda - 2/3) -->
+                        <div class="lg:col-span-2 space-y-6" id="quizContainer">
+                            <!-- Se poblará dinámicamente -->
+                        </div>
+
+                        <!-- Historial de Intentos / Calificaciones Registradas (Derecha - 1/3) -->
+                        <div class="space-y-6">
+                            <div class="bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60 flex flex-col justify-between h-full min-h-[300px]">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-black text-slate-400 uppercase tracking-widest block">Tus Intentos / Your Attempts</span>
+                                        <i class="fa-solid fa-clock-rotate-left text-slate-400 text-sm"></i>
+                                    </div>
+                                    <div id="attemptsContainer" class="space-y-2.5 overflow-y-auto max-h-[180px] pr-1">
+                                        <!-- Se poblará dinámicamente con las notas obtenidas -->
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 pt-4 border-t border-slate-200/60">
+                                    <div class="flex justify-between items-center text-xs font-black text-slate-500">
+                                        <span>Calificación Máxima:</span>
+                                        <span id="bestScoreText" class="text-orange-600 bg-orange-50 px-2.5 py-1 rounded-lg text-xs">0%</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">
+                                        Todas las calificaciones quedan registradas de manera local. Puedes intentar tantas veces como desees para alcanzar el 100% de perfección.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white/80 border-t border-slate-200 py-8 mt-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-black text-slate-700">English for Waiters Portal</span>
+                <span>•</span>
+                <span>Inglés de Servicio para un Impacto Internacional</span>
+            </div>
+            <div>
+                <span>Plataforma interactiva optimizada. Hecha para capacitar camareros en el idioma del turismo con el menor uso de recursos de hardware. © 2026</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notificaciones flotantes (Toasts) -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900/95 text-white px-5 py-4 rounded-2xl shadow-xl flex items-center gap-4 border border-orange-500/20 max-w-sm">
+            <div id="toastIcon" class="text-emerald-400 bg-white/10 p-2.5 rounded-xl">
+                <i class="fa-solid fa-circle-check text-xl"></i>
+            </div>
+            <div>
+                <p id="toastMessage" class="text-sm font-black leading-tight text-white">¡Buen trabajo!</p>
+                <p id="toastSubmessage" class="text-xs text-slate-400 mt-1 leading-snug">El recurso se ha registrado con éxito.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos curriculares bilingües optimizados
+        const classesData = [
+            {
+                id: 1,
+                title: "Class 1: Greeting & Seating Guests",
+                subtitle: "Dar la bienvenida y ubicar a los comensales",
+                desc: "Aprende el arte de recibir a los clientes en la entrada, preguntar por reservas y guiarlos de forma educada hasta su mesa asignada.",
+                grammar: {
+                    title: "Polite Welcomes & Helpful Commands / Saludos Educados",
+                    desc: "Para dar la bienvenida, utiliza siempre un tono alegre y formal: <strong>'Welcome to...'</strong>. Si deseas pedirles que te sigan, usa un mandato amable: <strong>'Please follow me'</strong> (Por favor, síganme) en lugar de un tosco 'come here'. Para verificar reservas usa la estructura formal: <strong>'Do you have a reservation?'</strong>."
+                },
+                video: {
+                    title: "Video 01: Receiving English-speaking Guests / Cómo saludar clientes en la entrada",
+                    duration: "08:15"
+                },
+                vocabulary: [
+                    { term: "Welcome", translation: "Bienvenido(s)", pronunciation: "/ˈwel.kəm/", example: "Welcome to our steakhouse! Do you have a reservation?" },
+                    { term: "Follow me", translation: "Sígame / Sígannos", pronunciation: "/ˈfɒl.əʊ miː/", example: "Your table is ready. Please, follow me." },
+                    { term: "Reservation", translation: "Reserva / Reservación", pronunciation: "/ˌrez.əˈveɪ.ʃən/", example: "Hello, I have a reservation under the name of Smith." },
+                    { term: "Table for two", translation: "Mesa para dos", pronunciation: "/ˈteɪ.bəl fɔːr tuː/", example: "We would like a table for two near the window, please." },
+                    { term: "Host / Hostess", translation: "Recepcionista / Persona que da la bienvenida", pronunciation: "/həʊst/", example: "The hostess will check the guest list at the door." }
+                ],
+                quiz: [
+                    {
+                        question: "¿Cómo saludas formalmente a un cliente que acaba de entrar al restaurante?",
+                        options: [
+                            "What do you want?",
+                            "Welcome! Do you have a reservation?",
+                            "Come in and sit down."
+                        ],
+                        answer: 1,
+                        explanation: "'Welcome! Do you have a reservation?' es el saludo clásico, profesional y el más cortés de la industria."
+                    },
+                    {
+                        question: "¿Qué expresión usas para guiar a los clientes a su mesa?",
+                        options: [
+                            "Follow me, please.",
+                            "Go there.",
+                            "Sit at table two."
+                        ],
+                        answer: 0,
+                        explanation: "'Follow me, please' es la frase perfecta para pedir amablemente que te acompañen a la mesa."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Class 2: Taking Drink Orders",
+                subtitle: "Tomar órdenes de bebidas y aperitivos",
+                desc: "Aprende a ofrecer la carta de vinos y bebidas, tomar pedidos de cócteles y bebidas frías, y consultar las preferencias de agua.",
+                grammar: {
+                    title: "Offering Beverages with 'Would you like...?' / Ofrecer cortésmente",
+                    desc: "Para ofrecer bebidas, la estructura reina es: <strong>'Would you like some...?'</strong> (¿Le gustaría un poco de...?) o <strong>'Can I get you something to drink?'</strong> (¿Puedo traerle algo de tomar?). Evita decir 'What do you want to drink?', pues suena agresivo."
+                },
+                video: {
+                    title: "Video 02: Suggesting Drinks & Aperitifs / Sugerir bebidas a la mesa",
+                    duration: "09:30"
+                },
+                vocabulary: [
+                    { term: "Still water", translation: "Agua sin gas", pronunciation: "/stɪl ˈwɔː.tər/", example: "Would you like still water or sparkling water?" },
+                    { term: "Sparkling water", translation: "Agua con gas", pronunciation: "/ˈspɑː.klɪŋ ˈwɔː.tər/", example: "A bottle of sparkling water with lemon, please." },
+                    { term: "On the rocks", translation: "Con hielo", pronunciation: "/ɒn ðə rɒks/", example: "I will have a whiskey on the rocks, please." },
+                    { term: "Wine list", translation: "Carta de vinos", pronunciation: "/waɪn lɪst/", example: "Here is our wine list. We have excellent local options." },
+                    { term: "Draft beer", translation: "Cerveza de barril / caña", pronunciation: "/drɑːft bɪər/", example: "We have local draft beer and imported beers in bottles." }
+                ],
+                quiz: [
+                    {
+                        question: "¿Cómo preguntas cortésmente al cliente si desea beber algo?",
+                        options: [
+                            "Drink now please?",
+                            "Can I get you something to drink?",
+                            "What drink you buy?"
+                        ],
+                        answer: 1,
+                        explanation: "'Can I get you something to drink?' es una pregunta estándar muy educada que demuestra excelente servicio."
+                    },
+                    {
+                        question: "Si el cliente te pide 'water with gas', ¿cuál es el término técnico e ideal que debes usar en inglés?",
+                        options: [
+                            "Still water",
+                            "Sparkling water",
+                            "Tap water"
+                        ],
+                        answer: 1,
+                        explanation: "'Sparkling water' es el término correcto para el agua carbonatada o agua con gas."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Class 3: Explaining the Menu & Recommendations",
+                subtitle: "Explicar la carta y dar recomendaciones",
+                desc: "Domina el vocabulario de ingredientes comunes, niveles de picante, alérgenos importantes y cómo recomendar la especialidad del día.",
+                grammar: {
+                    title: "Recommending Food with 'I highly recommend...' / Recomendar platos",
+                    desc: "Utiliza el verbo 'highly recommend' para dirigir la atención del comensal hacia un plato premium: <strong>'I highly recommend the grilled salmon'</strong> (Le recomiendo ampliamente el salmón a la parrilla). Si un plato contiene alérgenos, usa: <strong>'It contains...'</strong> (Contiene...)."
+                },
+                video: {
+                    title: "Video 03: Describing Specials and Allergens / Especiales del día y alergias",
+                    duration: "10:45"
+                },
+                vocabulary: [
+                    { term: "Daily special", translation: "Plato del día / Especial del día", pronunciation: "/ˈdeɪ.li ˈspeʃ.əl/", example: "Today's daily special is Roasted Garlic Chicken." },
+                    { term: "Allergy / Allergen", translation: "Alergia / Alérgeno", pronunciation: "/ˈæl.ə.dʒi/", example: "Please let me know if you have any food allergies." },
+                    { term: "Spicy", translation: "Picante", pronunciation: "/ˈspaɪ.si/", example: "This curry is very spicy. Is that okay for you?" },
+                    { term: "Dressing", translation: "Aderezo / Salsa para ensaladas", pronunciation: "/ˈdres.ɪŋ/", example: "What kind of dressing would you like for your salad?" },
+                    { term: "Vegetarian option", translation: "Opción vegetariana", pronunciation: "/ˌvedʒ.ɪˈteə.ri.ən ˈɒp.ʃən/", example: "We have a delicious vegetarian option with mushrooms." }
+                ],
+                quiz: [
+                    {
+                        question: "¿Cómo describes el plato especial de la jornada?",
+                        options: [
+                            "The special of today is...",
+                            "Today's daily special is...",
+                            "Today we cook..."
+                        ],
+                        answer: 1,
+                        explanation: "'Today's daily special is...' es la fórmula idónea para introducir la recomendación especial del restaurante."
+                    },
+                    {
+                        question: "Si un plato contiene nueces y el cliente te dice que es alérgico a ellas, ¿cómo le adviertes?",
+                        options: [
+                            "No eat, it has danger nuts.",
+                            "Be careful, this dish contains nuts.",
+                            "Eat, it is sweet."
+                        ],
+                        answer: 1,
+                        explanation: "'This dish contains nuts' explica con total claridad los ingredientes alérgicos de un plato."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Class 4: Taking Food Orders",
+                subtitle: "Tomar las comandas y términos de la carne",
+                desc: "Aprende a preguntar por los términos de cocción de la carne, acompañamientos (guarniciones) y cómo confirmar y cerrar la comanda correctamente.",
+                grammar: {
+                    title: "Asking for meat temperatures & sides / Puntos de la carne",
+                    desc: "Para preguntar cómo desean la carne, usa la pregunta clave: <strong>'How would you like your steak cooked?'</strong> (¿Cómo prefiere el término de su carne?). Los términos principales son: <strong>rare</strong> (un cuarto), <strong>medium</strong> (término medio) y <strong>well-done</strong> (bien cocida)."
+                },
+                video: {
+                    title: "Video 04: Order-taking & Steak Doneness / Tomando comandas de platos fuertes",
+                    duration: "11:20"
+                },
+                vocabulary: [
+                    { term: "Main course", translation: "Plato principal / plato fuerte", pronunciation: "/meɪn kɔːs/", example: "What would you like for your main course?" },
+                    { term: "Appetizer / Starter", translation: "Entrada / Aperitivo inicial", pronunciation: "/ˈæp.ə.taɪ.zər/", example: "Would you like to start with an appetizer?" },
+                    { term: "Side dish / Sides", translation: "Acompañamiento / Guarnición", pronunciation: "/saɪd dɪʃ/", example: "You can choose one side dish: French fries or vegetables." },
+                    { term: "Medium-rare", translation: "Término medio a tres cuartos (carne)", pronunciation: "/ˈmiː.di.əm reər/", example: "I want my ribeye steak cooked medium-rare, please." },
+                    { term: "To order", translation: "Pedir / Ordenar", pronunciation: "/tuː ˈɔː.dər/", example: "Are you ready to order?" }
+                ],
+                quiz: [
+                    {
+                        question: "¿Qué pregunta utilizas para indagar sobre la cocción de la carne de un comensal?",
+                        options: [
+                            "How do you cook your meat?",
+                            "How would you like your steak cooked?",
+                            "Do you like red color?"
+                        ],
+                        answer: 1,
+                        explanation: "'How would you like your steak cooked?' es la frase estándar y correcta en hostelería internacional."
+                    },
+                    {
+                        question: "¿Qué significa el término de cocción 'rare' en inglés?",
+                        options: [
+                            "Bien cocido y seco.",
+                            "Muy poco cocido / Término un cuarto (con centro rojo).",
+                            "Término medio."
+                        ],
+                        answer: 1,
+                        explanation: "'Rare' hace referencia a la carne roja, sellada por fuera y jugosa / poco cocida por dentro."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "Class 5: Serving Food & Checking In",
+                subtitle: "Servir los platos y comprobar la satisfacción",
+                desc: "Aprende a entregar los platos correctos al comensal idóneo, desear un buen provecho y volver a la mesa para comprobar que todo esté excelente.",
+                grammar: {
+                    title: "Polite expressions during service & check-ins / Servicio y Seguimiento",
+                    desc: "Al entregar la comida, usa la cortesía clásica: <strong>'Enjoy your meal!'</strong> (¡Que disfrute su comida! / Buen provecho). Después de unos minutos, acércate a la mesa y comprueba el servicio preguntando: <strong>'Is everything tasting okay?'</strong>."
+                },
+                video: {
+                    title: "Video 05: Serving Plateways & Customer Satisfaction / Servir y confirmar satisfacción",
+                    duration: "09:00"
+                },
+                vocabulary: [
+                    { term: "Enjoy your meal", translation: "¡Buen provecho! / Disfrute su comida", pronunciation: "/ɪnˈdʒɔɪ jɔːr miːl/", example: "Here is your grilled sea bass. Enjoy your meal!" },
+                    { term: "Napkin", translation: "Servilleta", pronunciation: "/ˈnæp.kɪn/", example: "Excuse me, could we have extra napkins, please?" },
+                    { term: "Cutlery / Silverware", translation: "Cubiertos", pronunciation: "/ˈkʌt.lər.i/", example: "I will bring you clean cutlery for your main course." },
+                    { term: "Refill", translation: "Rellenar la copa / Refrescar la bebida", pronunciation: "/ˈriː.fɪl/", example: "Would you like a refill on your soda?" },
+                    { term: "Is everything okay?", translation: "¿Está todo bien? / ¿Todo correcto?", pronunciation: "/ɪz ˈev.ri.θɪŋ ˌəʊˈkeɪ/", example: "Is everything tasting okay with your food?" }
+                ],
+                quiz: [
+                    {
+                        question: "¿Qué frase usas amablemente al colocar el plato del cliente sobre la mesa?",
+                        options: [
+                            "Eat now.",
+                            "Enjoy your meal!",
+                            "Here is food."
+                        ],
+                        answer: 1,
+                        explanation: "'Enjoy your meal!' es el equivalente más natural y profesional al español 'buen provecho'."
+                    },
+                    {
+                        question: "¿De qué forma preguntas a la mesa si la comida está a su total satisfacción?",
+                        options: [
+                            "Is everything tasting okay?",
+                            "Do you eat everything?",
+                            "Food okay or bad?"
+                        ],
+                        answer: 0,
+                        explanation: "'Is everything tasting okay?' es una frase sumamente amigable y sutil para comprobar la satisfacción en mesa."
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: "Class 6: Handling Complaints & Mistakes",
+                subtitle: "Manejar quejas y platos equivocados",
+                desc: "Aprende el vocabulario crucial para disculparte cordialmente en inglés, proponer soluciones y mantener la calma ante un comensal descontento.",
+                grammar: {
+                    title: "Professional Apologies and Instant Solutions / Disculpas y soluciones",
+                    desc: "Cuando ocurra un error, nunca te justifiques. Ofrece disculpas sinceras: <strong>'I do apologize for that'</strong> (Le pido una sincera disculpa por eso). Luego, ofrece una solución inmediata en tiempo futuro: <strong>'I will bring you a new one right away'</strong> (Le traeré uno nuevo de inmediato)."
+                },
+                video: {
+                    title: "Video 06: Solving Customer Complaints / Resolución de quejas y errores de cocina",
+                    duration: "12:15"
+                },
+                vocabulary: [
+                    { term: "Apologize", translation: "Pedir disculpas / Disculparse", pronunciation: "/əˈpɒl.ə.dʒaɪz/", example: "I apologize for the delay, our kitchen is very busy tonight." },
+                    { term: "Cold food", translation: "Comida fría", pronunciation: "/kəʊld fuːd/", example: "My soup is completely cold. Could you heat it up?" },
+                    { term: "Wrong order", translation: "Orden equivocada", pronunciation: "/rɒŋ ˈɔː.dər/", example: "I think this is the wrong order. I ordered steak, not chicken." },
+                    { term: "Right away", translation: "Inmediatamente / De inmediato", pronunciation: "/raɪt əˈweɪ/", example: "I will change this plate right away. Do not worry." },
+                    { term: "On the house", translation: "Cortesía de la casa / Gratis", pronunciation: "/ɒn ðə haʊs/", example: "Your desserts are on the house to make up for the mistake." }
+                ],
+                quiz: [
+                    {
+                        question: "Si traes un plato equivocado por error, ¿cómo te disculpas formalmente?",
+                        options: [
+                            "Sorry, the kitchen is bad.",
+                            "I apologize for the mistake. I will change it right away.",
+                            "You can eat this one too."
+                        ],
+                        answer: 1,
+                        explanation: "Expresar 'I apologize for the mistake' y proponer cambiarlo 'right away' es la mejor respuesta profesional."
+                    },
+                    {
+                        question: "¿Qué significa que un artículo del restaurante sea 'on the house'?",
+                        options: [
+                            "Que el cliente debe consumirlo fuera del local.",
+                            "Que es gratis, cortesía de la casa.",
+                            "Que tiene un costo de servicio adicional."
+                        ],
+                        answer: 1,
+                        explanation: "En hostelería, 'on the house' significa que el restaurante invita y el cliente no paga por ese producto."
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: "Class 7: Presenting the Bill & Payments",
+                subtitle: "Presentar la cuenta y cobrar",
+                desc: "Aprende a entregar el ticket de consumo de forma adecuada, preguntar si pagarán juntos o separados y procesar pagos con tarjeta o efectivo.",
+                grammar: {
+                    title: "Asking about Payment Preferences / Métodos de Pago",
+                    desc: "Cuando pidan la cuenta, entrégala de forma discreta. Pregunta el método de pago: <strong>'Are you paying together or separately?'</strong> (¿Pagarán juntos o por separado?) y define la transacción con: <strong>'Card or cash?'</strong>."
+                },
+                video: {
+                    title: "Video 07: Presenting the Check / Cobros y transacciones de caja",
+                    duration: "10:00"
+                },
+                vocabulary: [
+                    { term: "Bill / Check", translation: "La cuenta / El ticket de consumo", pronunciation: "/bɪl/", example: "Excuse me, waiter, could we have the bill, please?" },
+                    { term: "Credit card", translation: "Tarjeta de crédito / débito", pronunciation: "/ˈkred.ɪt kɑːd/", example: "Do you accept international credit cards?" },
+                    { term: "Cash", translation: "Efectivo", pronunciation: "/kæʃ/", example: "I only have cash. Do you have change for a hundred dollars?" },
+                    { term: "Keep the change", translation: "Quédese con el cambio / propina", pronunciation: "/kiːp ðə tʃeɪndʒ/", example: "The service was wonderful. Keep the change!" },
+                    { term: "Service charge", translation: "Cargo por servicio / propina incluida", pronunciation: "/ˈsɜː.vɪs tʃɑːdʒ/", example: "The service charge is already included in the total bill." }
+                ],
+                quiz: [
+                    {
+                        question: "¿Qué pregunta utilizas para saber si el cobro se hace en una sola cuenta o individual?",
+                        options: [
+                            "Who pays all?",
+                            "Are you paying together or separately?",
+                            "One card or many cards?"
+                        ],
+                        answer: 1,
+                        explanation: "'Are you paying together or separately?' es la forma profesional y estándar de consultar la división de una cuenta."
+                    },
+                    {
+                        question: "Si el comensal te entrega un billete grande y te dice 'Keep the change', ¿qué debes hacer?",
+                        options: [
+                            "Traerle todo el cambio de inmediato.",
+                            "No traer cambio, ya que te ha dicho que te quedes con la diferencia como propina.",
+                            "Preguntar si quiere pagar con tarjeta."
+                        ],
+                        answer: 1,
+                        explanation: "'Keep the change' significa 'quédese con el cambio', indicando que el excedente es su propina."
+                    }
+                ]
+            },
+            {
+                id: 8,
+                title: "Class 8: Warm Farewell & Saying Goodbye",
+                subtitle: "Despedida cordial de los comensales",
+                desc: "Aprende las frases idóneas para despedir a los clientes, agradecer su visita y desearles un gran día u hospedaje en la ciudad.",
+                grammar: {
+                    title: "Polite Future Wishes / Deseos cordiales al despedirse",
+                    desc: "Termina el servicio con una gran sonrisa y una bendición del día en inglés: <strong>'Thank you for dining with us!'</strong> (Gracias por cenar con nosotros) y un deseo para su día: <strong>'Have a wonderful evening!'</strong>."
+                },
+                video: {
+                    title: "Video 08: Saying Goodbye to Customers / Despedir y agradecer la visita",
+                    duration: "07:50"
+                },
+                vocabulary: [
+                    { term: "Thank you for dining with us", translation: "Gracias por cenar con nosotros", pronunciation: "/θæŋk juː fɔːr ˈdaɪ.nɪŋ wɪð ʌs/", example: "Thank you for dining with us. We hope to see you again soon." },
+                    { term: "Have a wonderful day", translation: "Que tenga un día maravilloso", pronunciation: "/hæv ə ˈwʌn.də.fəl deɪ/", example: "Goodbye! Have a wonderful day in the city!" },
+                    { term: "Hope to see you again", translation: "Espero volver a verle(s)", pronunciation: "/həʊp tuː siː juː əˈɡen/", example: "Thank you for your visit, hope to see you again soon!" },
+                    { term: "Safe travels", translation: "Buen viaje de retorno", pronunciation: "/seɪf ˈtræv.əlz/", example: "Enjoy the rest of your vacation, safe travels!" },
+                    { term: "Pleasure", translation: "Un gusto / un placer", pronunciation: "/ˈpleʒ.ər/", example: "It was a pleasure serving you tonight." }
+                ],
+                quiz: [
+                    {
+                        question: "@Cuál es la forma más profesional de agradecer la visita y el consumo en el restaurante?",
+                        options: [
+                            "Thank you for dining with us. We hope to see you again!",
+                            "Go home happy.",
+                            "Bye-bye, thank you for the money."
+                        ],
+                        answer: 0,
+                        explanation: "'Thank you for dining with us' es una expresión de etiqueta que denota la más alta educación en hostelería."
+                    },
+                    {
+                        question: "Si el comensal te agradece el servicio diciendo 'Thank you for everything', ¿cómo respondes?",
+                        options: [
+                            "It was a pleasure serving you.",
+                            "Nothing.",
+                            "Okay, goodbye."
+                        ],
+                        answer: 0,
+                        explanation: "Responder 'It was a pleasure serving you' (Fue un placer servirle) concluye la interacción con máxima cordialidad."
+                    }
+                ]
+            }
+        ];
+
+        let userProgress = {
+            studentName: "Personal de Servicio",
+            completedResources: [], 
+            completedQuizzes: {},    
+            quizAttempts: {},       
+            currentClassId: null,
+            currentVocabIndex: 0
+        };
+
+        // Instancia nativa del Web Audio API para efectos de sonido sin dependencias externas
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSuccessSound() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime); // Volumen optimizado
+                osc.start();
+                osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.08, 0.12); // A5
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.stop(audioCtx.currentTime + 0.25);
+            } catch(e) {
+                console.log("Audio API deshabilitada.");
+            }
+        }
+
+        function playCelebrationSound() {
+            try {
+                const notes = [440.00, 554.37, 659.25, 880.00]; 
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.35);
+                    }, idx * 60);
+                });
+            } catch(e) {
+                console.log("Audio API deshabilitada.");
+            }
+        }
+
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        let confettiArray = [];
+        let animationFrameId = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height - 15;
+                this.size = Math.random() * 6 + 4; // Tamaño optimizado para reducir área de pintura
+                this.color = `hsl(${Math.random() * 360}, 85%, 55%)`;
+                this.speedY = Math.random() * 3.5 + 2.5;
+                this.speedX = Math.random() * 2 - 1;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 3 - 1.5;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function triggerConfettiBurst() {
+            confettiArray = [];
+            // Cantidad reducida de 150 a 65 para alto desempeño móvil y excelente look
+            for (let i = 0; i < 65; i++) {
+                confettiArray.push(new Confetti());
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+            confettiArray.forEach(p => {
+                p.update();
+                p.draw();
+                if (p.y < canvas.height) {
+                    active = true;
+                }
+            });
+            if (active) {
+                animationFrameId = requestAnimationFrame(animateConfetti);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confettiArray = []; // Liberar memoria
+            }
+        }
+
+        function initApp() {
+            const savedData = localStorage.getItem('esp_waiters_gamified_progress_2026');
+            if (savedData) {
+                try {
+                    const parsed = JSON.parse(savedData);
+                    userProgress = {
+                        studentName: parsed.studentName || "Personal de Servicio",
+                        completedResources: parsed.completedResources || [],
+                        completedQuizzes: parsed.completedQuizzes || {},
+                        quizAttempts: parsed.quizAttempts || {},
+                        currentClassId: parsed.currentClassId || null,
+                        currentVocabIndex: parsed.currentVocabIndex || 0
+                    };
+                } catch(e) {
+                    console.error("Error al cargar localStorage.");
+                }
+            }
+
+            const nameInput = document.getElementById('studentNameInput');
+            nameInput.value = userProgress.studentName || "Personal de Servicio";
+            updateAvatar(userProgress.studentName || "Personal de Servicio");
+            document.getElementById('welcomeStudentName').textContent = userProgress.studentName || "Personal de Servicio";
+
+            nameInput.addEventListener('change', (e) => {
+                const val = e.target.value.trim() || "Personal de Servicio";
+                userProgress.studentName = val;
+                updateAvatar(val);
+                document.getElementById('welcomeStudentName').textContent = val;
+                saveProgress();
+                showToast("¡Perfil Guardado!", `Se actualizó tu nombre de servicio a "${val}".`, "fa-user-tag");
+            });
+
+            document.getElementById('resetProgressBtn').onclick = () => {
+                showCustomModal(
+                    "Reiniciar Progreso / Reset",
+                    "Volverás a empezar el curso de cero",
+                    "¿Estás completamente seguro de que deseas borrar tu progreso, intentos y calificaciones registradas? Esta acción no se puede deshacer.",
+                    () => {
+                        userProgress.completedResources = [];
+                        userProgress.completedQuizzes = {};
+                        userProgress.quizAttempts = {};
+                        saveProgress();
+                        initApp();
+                        showDashboard();
+                        showToast("Progreso Reiniciado", "Tu entrenamiento se ha restablecido por completo.", "fa-rotate-right");
+                    },
+                    "fa-trash text-red-500",
+                    true
+                );
+            };
+
+            renderClassGrid();
+            updateOverallProgress();
+        }
+
+        function updateAvatar(name) {
+            document.getElementById('studentAvatar').textContent = name.charAt(0).toUpperCase();
+        }
+
+        function saveProgress() {
+            localStorage.setItem('esp_waiters_gamified_progress_2026', JSON.stringify(userProgress));
+        }
+
+        function isClassFinished(classId) {
+            const hasVocab = userProgress.completedResources.includes(`c${classId}_vocab_grammar`);
+            const hasVideo = userProgress.completedResources.includes(`c${classId}_video`);
+            const bestQuizScore = userProgress.completedQuizzes[classId] || 0;
+            return hasVocab && hasVideo && (bestQuizScore === 100);
+        }
+
+        function isClassUnlocked(classId) {
+            if (classId === 1) return true;
+            return isClassFinished(classId - 1);
+        }
+
+        function renderClassGrid() {
+            const gridContainer = document.getElementById('classGrid');
+            gridContainer.innerHTML = '';
+
+            const colorPalettes = {
+                1: { gradient: 'from-orange-400 via-amber-500 to-red-500', text: 'text-orange-600', bg: 'bg-orange-50' },
+                2: { gradient: 'from-blue-400 via-indigo-500 to-blue-600', text: 'text-blue-600', bg: 'bg-blue-50' },
+                3: { gradient: 'from-emerald-400 via-teal-500 to-emerald-600', text: 'text-teal-600', bg: 'bg-teal-50' },
+                4: { gradient: 'from-rose-400 via-pink-500 to-red-500', text: 'text-rose-600', bg: 'bg-rose-50' },
+                5: { gradient: 'from-purple-400 via-purple-600 to-pink-600', text: 'text-purple-600', bg: 'bg-purple-50' },
+                6: { gradient: 'from-amber-400 via-yellow-500 to-amber-600', text: 'text-yellow-600', bg: 'bg-yellow-50' },
+                7: { gradient: 'from-cyan-400 via-cyan-600 to-blue-600', text: 'text-cyan-600', bg: 'bg-cyan-50' },
+                8: { gradient: 'from-red-400 via-orange-500 to-red-600', text: 'text-red-600', bg: 'bg-red-50' }
+            };
+
+            classesData.forEach(cls => {
+                const unlocked = isClassUnlocked(cls.id);
+                const finished = isClassFinished(cls.id);
+                
+                const hasVocab = userProgress.completedResources.includes(`c${cls.id}_vocab_grammar`) ? 1 : 0;
+                const hasVideo = userProgress.completedResources.includes(`c${cls.id}_video`) ? 1 : 0;
+                const bestScore = userProgress.completedQuizzes[cls.id] || 0;
+                const quizProgress = bestScore === 100 ? 1 : 0;
+                
+                let cardHTML = '';
+                const palette = colorPalettes[cls.id] || colorPalettes[1];
+
+                if (!unlocked) {
+                    cardHTML = `
+                        <div class="bg-white/70 border-2 border-slate-200/50 rounded-3xl p-6 flex flex-col justify-between h-[270px] relative overflow-hidden opacity-75 grayscale select-none cursor-not-allowed group transition-transform duration-200 hover:scale-95" 
+                             onclick="triggerBlockedWarning(${cls.id})">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-[11px] font-black text-slate-400 tracking-wider">CLASE 0${cls.id}</span>
+                                    <span class="bg-slate-200 text-slate-500 border border-slate-300 text-[10px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1">
+                                        <i class="fa-solid fa-lock"></i> Bloqueado / Locked
+                                    </span>
+                                </div>
+                                <h4 class="text-base font-black text-slate-500 leading-snug mb-2">${cls.title}</h4>
+                                <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">${cls.desc}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl bg-slate-200 flex items-center justify-center text-slate-400">
+                                    <i class="fa-solid fa-lock-open text-sm"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 leading-snug">Completa la Clase 0${cls.id - 1} al 100% para poder acceder.</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    let badgeHTML = '';
+                    let wrapperClasses = 'bg-white/95 border-2 border-orange-100 shadow-md hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]';
+                    
+                    if (finished) {
+                        badgeHTML = `
+                            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Superado / Passed
+                            </span>
+                        `;
+                        wrapperClasses = 'bg-gradient-to-br from-white via-emerald-50/10 to-emerald-50/20 border-2 border-emerald-400 shadow-sm hover:-translate-y-1 hover:scale-[1.02]';
+                    } else if (hasVocab || hasVideo || bestScore > 0) {
+                        badgeHTML = `
+                            <span class="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-1">
+                                <i class="fa-solid fa-hourglass-half"></i> En estudio / In progress
+                            </span>
+                        `;
+                        wrapperClasses = 'bg-white/95 border-2 border-amber-400 shadow-sm hover:-translate-y-1 hover:scale-[1.02] active-border';
+                    } else {
+                        badgeHTML = `
+                            <span class="bg-gradient-to-r from-orange-500 to-red-600 text-white text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-1">
+                                <i class="fa-solid fa-play"></i> Disponible / Ready
+                            </span>
+                        `;
+                    }
+
+                    const classProgressPercent = Math.round(((hasVocab + hasVideo + quizProgress) / 3) * 100);
+
+                    cardHTML = `
+                        <div class="${wrapperClasses} rounded-3xl p-6 cursor-pointer transition-transform duration-200 flex flex-col justify-between h-[270px] group relative overflow-hidden" 
+                             onclick="openClassDetail(${cls.id})">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-[11px] font-black ${palette.text} tracking-wider">CLASE 0${cls.id}</span>
+                                    ${badgeHTML}
+                                </div>
+                                <h4 class="text-base font-black text-slate-900 group-hover:text-orange-600 transition-colors leading-snug line-clamp-2 mb-2">${cls.title}</h4>
+                                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">${cls.desc}</p>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-slate-100">
+                                <div class="flex justify-between items-center text-[10px] font-extrabold text-slate-400 mb-2">
+                                    <span>Actividades: ${(hasVocab + hasVideo + quizProgress)}/3</span>
+                                    <span>Puntaje: ${bestScore}%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                    <div class="h-full rounded-full ${finished ? 'bg-gradient-to-r from-emerald-400 to-teal-500' : 'bg-gradient-to-r ' + palette.gradient}" 
+                                         style="width: ${classProgressPercent}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const cardContainer = document.createElement('div');
+                cardContainer.innerHTML = cardHTML;
+                gridContainer.appendChild(cardContainer.firstElementChild);
+            });
+        }
+
+        window.triggerBlockedWarning = function(classId) {
+            playSuccessSound();
+            showCustomModal(
+                "Lección Bloqueada / Locked Lesson",
+                "Requiere aprobar el módulo previo",
+                `Para ingresar a la Clase 0${classId}, primero debes completar todo el contenido de la Clase 0${classId - 1} al 100% (incluyendo el Vocabulario, ver el Video y tener una nota perfecta del 100% en el Test).`,
+                null,
+                "fa-lock text-red-500",
+                false 
+            );
+            
+            const eventTarget = window.event.currentTarget;
+            if (eventTarget) {
+                eventTarget.classList.add('shake-element');
+                setTimeout(() => eventTarget.classList.remove('shake-element'), 360);
+            }
+        }
+
+        function showCustomModal(title, subtitle, text, onConfirm, iconClass = "fa-circle-question", isConfirmMode = true) {
+            const modal = document.getElementById('customModal');
+            const card = document.getElementById('customModalCard');
+            
+            document.getElementById('customModalTitle').textContent = title;
+            document.getElementById('customModalSubtitle').textContent = subtitle;
+            document.getElementById('customModalText').textContent = text;
+            
+            const iconContainer = document.getElementById('customModalIcon');
+            iconContainer.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 shadow-inner ${iconClass.includes('text-red') ? 'bg-red-50' : 'bg-orange-50'}`;
+            iconContainer.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+
+            const cancelBtn = document.getElementById('customModalCancelBtn');
+            if (isConfirmMode) {
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
+
+            const oldConfirmBtn = document.getElementById('customModalConfirmBtn');
+            const newConfirmBtn = oldConfirmBtn.cloneNode(true);
+            oldConfirmBtn.parentNode.replaceChild(newConfirmBtn, oldConfirmBtn);
+
+            newConfirmBtn.onclick = () => {
+                closeCustomModal();
+                if (onConfirm) onConfirm();
+            };
+
+            cancelBtn.onclick = closeCustomModal;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                card.classList.remove('scale-95');
+            }, 30);
+        }
+
+        function closeCustomModal() {
+            const modal = document.getElementById('customModal');
+            const card = document.getElementById('customModalCard');
+            modal.classList.add('opacity-0');
+            card.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        function updateOverallProgress() {
+            let totalClasses = classesData.length;
+            let finishedCount = 0;
+
+            classesData.forEach(cls => {
+                if (isClassFinished(cls.id)) {
+                    finishedCount++;
+                }
+            });
+
+            const percent = Math.round((finishedCount / totalClasses) * 100);
+            
+            document.getElementById('overallPercent').innerHTML = `<i class="fa-solid fa-medal text-amber-300"></i> ${percent}% Completado`;
+            document.getElementById('overallProgressBar').style.width = `${percent}%`;
+            document.getElementById('overallClassCount').textContent = `${finishedCount} de ${totalClasses} Clases superadas al 100%`;
+        }
+
+        function showDashboard() {
+            stopMockVideo();
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            document.getElementById('classDetailSection').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderClassGrid();
+            updateOverallProgress();
+        }
+
+        function openClassDetail(classId) {
+            if (!isClassUnlocked(classId)) {
+                triggerBlockedWarning(classId);
+                return;
+            }
+
+            const cls = classesData.find(c => c.id === classId);
+            if (!cls) return;
+
+            userProgress.currentClassId = classId;
+            userProgress.currentVocabIndex = 0;
+
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('classDetailSection').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const headerArea = document.getElementById('classHeaderArea');
+            const colorGradients = [
+                'from-orange-500 to-red-600',
+                'from-blue-500 to-indigo-700',
+                'from-emerald-500 to-teal-600',
+                'from-rose-500 to-pink-600',
+                'from-purple-500 to-pink-600',
+                'from-amber-400 to-orange-500',
+                'from-cyan-500 to-blue-600',
+                'from-red-500 to-orange-600'
+            ];
+            const activeGrad = colorGradients[classId - 1] || 'from-orange-500 to-red-600';
+
+            const hasVocab = userProgress.completedResources.includes(`c${cls.id}_vocab_grammar`) ? 1 : 0;
+            const hasVideo = userProgress.completedResources.includes(`c${cls.id}_video`) ? 1 : 0;
+            const bestScore = userProgress.completedQuizzes[cls.id] || 0;
+            const hasQuizApproved = bestScore === 100 ? 1 : 0;
+            const totalStepsCompleted = hasVocab + hasVideo + hasQuizApproved;
+
+            headerArea.innerHTML = `
+                <div class="max-w-2xl">
+                    <span class="bg-gradient-to-r ${activeGrad} text-white text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-widest inline-block border border-white/20 shadow-sm mb-3">
+                        Módulo de Camareros 0${cls.id}
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-black text-slate-900 leading-tight mt-1 mb-2">${cls.title}</h2>
+                    <p class="text-sm text-orange-600 font-extrabold mb-3">${cls.subtitle}</p>
+                    <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">${cls.desc}</p>
+                </div>
+                <div class="bg-orange-50 border-2 border-orange-100 rounded-3xl p-5 flex items-center gap-5 self-stretch md:self-auto justify-between md:justify-start min-w-[240px] transform hover:scale-[1.01] transition-transform duration-200">
+                    <div class="text-center md:text-left">
+                        <span class="text-[10px] text-orange-400 font-black uppercase block tracking-wider">Avance del Módulo</span>
+                        <span class="text-lg font-black text-slate-900" id="classOverallRatio">${totalStepsCompleted}/3 Pasos Hechos</span>
+                    </div>
+                    <div class="w-14 h-14 rounded-full border-4 border-orange-100 border-t-orange-600 flex items-center justify-center font-black text-orange-600 text-sm shadow-inner">
+                        ${Math.round((totalStepsCompleted / 3) * 100)}%
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('grammarTitle').innerHTML = `<i class="fa-solid fa-book-bookmark text-orange-500"></i> ${cls.grammar.title}`;
+            document.getElementById('grammarDescription').innerHTML = cls.grammar.desc;
+
+            document.getElementById('videoClassTitle').textContent = cls.video.title;
+            document.getElementById('videoClassDuration').textContent = `${cls.video.duration} min de duración`;
+            document.getElementById('videoThumbnail').style.backgroundImage = `url('https://placehold.co/800x450/2c3e50/ffffff?text=Class+${cls.id}+-+ESP+Waiters')`;
+
+            updateStepsLockState(cls.id);
+            loadVocabCard(cls, 0);
+            renderQuiz(cls);
+            renderAttemptsHistory(cls.id);
+        }
+
+        function updateStepsLockState(classId) {
+            const hasVocab = userProgress.completedResources.includes(`c${classId}_vocab_grammar`);
+            const hasVideo = userProgress.completedResources.includes(`c${classId}_video`);
+
+            const step1StatusText = document.getElementById('step1Status');
+            const completeStep1Btn = document.getElementById('completeStep1Btn');
+            if (hasVocab) {
+                step1StatusText.innerHTML = `<span class="text-emerald-600 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Vocabulario Completado</span>`;
+                completeStep1Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-95 transition-colors shadow-sm flex items-center justify-center gap-2";
+                completeStep1Btn.innerHTML = `<i class="fa-solid fa-check-double"></i> Aprendido / Learned`;
+            } else {
+                step1StatusText.textContent = "Pendiente de estudio";
+                completeStep1Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2";
+                completeStep1Btn.innerHTML = `<i class="fa-solid fa-check"></i> Marcar como Aprendido / Done`;
+            }
+
+            const step2StatusText = document.getElementById('step2Status');
+            const completeStep2Btn = document.getElementById('completeStep2Btn');
+            if (hasVideo) {
+                step2StatusText.innerHTML = `<span class="text-emerald-600 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Video Visualizado</span>`;
+                completeStep2Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-95 transition-colors shadow-sm flex items-center justify-center gap-2";
+                completeStep2Btn.innerHTML = `<i class="fa-solid fa-check-double"></i> Video Visto / Watched`;
+            } else {
+                step2StatusText.textContent = "Pendiente de reproducción";
+                completeStep2Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2";
+                completeStep2Btn.innerHTML = `<i class="fa-solid fa-square-check"></i> Marcar Video como Visto / Watched`;
+            }
+        }
+
+        window.markStep1Complete = function() {
+            const classId = userProgress.currentClassId;
+            const resKey = `c${classId}_vocab_grammar`;
+            
+            if (!userProgress.completedResources.includes(resKey)) {
+                userProgress.completedResources.push(resKey);
+                playSuccessSound();
+                showToast("¡Vocabulario Guardado!", "Se ha registrado que estudiaste el vocabulario.", "fa-bookmark text-emerald-500");
+                
+                saveProgress();
+                updateStepsLockState(classId);
+                refreshHeaderRatio();
+            } else {
+                userProgress.completedResources = userProgress.completedResources.filter(r => r !== resKey);
+                saveProgress();
+                updateStepsLockState(classId);
+                refreshHeaderRatio();
+                showToast("Progreso Actualizado", "Se quitó la marca de estudio de esta sección.", "fa-rotate-right text-orange-500");
+            }
+        }
+
+        window.markStep2Complete = function() {
+            const classId = userProgress.currentClassId;
+            const resKey = `c${classId}_video`;
+            
+            if (!userProgress.completedResources.includes(resKey)) {
+                userProgress.completedResources.push(resKey);
+                playSuccessSound();
+                showToast("¡Video Completado!", "Has visto el video de simulación.", "fa-circle-play text-orange-500");
+                
+                saveProgress();
+                updateStepsLockState(classId);
+                refreshHeaderRatio();
+            } else {
+                userProgress.completedResources = userProgress.completedResources.filter(r => r !== resKey);
+                saveProgress();
+                updateStepsLockState(classId);
+                refreshHeaderRatio();
+                showToast("Progreso Actualizado", "Se quitó la marca de visualización de este video.", "fa-rotate-right text-orange-500");
+            }
+        }
+
+        function refreshHeaderRatio() {
+            const classId = userProgress.currentClassId;
+            const hasVocab = userProgress.completedResources.includes(`c${classId}_vocab_grammar`) ? 1 : 0;
+            const hasVideo = userProgress.completedResources.includes(`c${classId}_video`) ? 1 : 0;
+            const bestScore = userProgress.completedQuizzes[classId] || 0;
+            const hasQuizApproved = bestScore === 100 ? 1 : 0;
+            const totalStepsCompleted = hasVocab + hasVideo + hasQuizApproved;
+
+            document.getElementById('classOverallRatio').textContent = `${totalStepsCompleted}/3 Pasos Hechos`;
+            const percentContainer = document.querySelector('#classHeaderArea .w-14');
+            if (percentContainer) {
+                percentContainer.textContent = `${Math.round((totalStepsCompleted / 3) * 100)}%`;
+            }
+        }
+
+        let mockVideoTimer = null;
+        let mockVideoProgress = 0;
+        let isMockVideoPlaying = false;
+
+        function toggleMockVideo() {
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const bigPlayIcon = document.getElementById('bigPlayIcon');
+            const videoBigPlayBtn = document.getElementById('videoBigPlayBtn');
+            const progressBar = document.getElementById('videoProgressBar');
+            const timeText = document.getElementById('videoTimeText');
+
+            if (isMockVideoPlaying) {
+                clearInterval(mockVideoTimer);
+                isMockVideoPlaying = false;
+                if (playPauseIcon) playPauseIcon.className = "fa-solid fa-play";
+                if (bigPlayIcon) bigPlayIcon.className = "fa-solid fa-play ml-1";
+                if (videoBigPlayBtn) videoBigPlayBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                isMockVideoPlaying = true;
+                if (playPauseIcon) playPauseIcon.className = "fa-solid fa-pause";
+                if (bigPlayIcon) bigPlayIcon.className = "fa-solid fa-pause ml-0";
+                if (videoBigPlayBtn) videoBigPlayBtn.classList.add('opacity-0', 'pointer-events-none');
+
+                mockVideoTimer = setInterval(() => {
+                    mockVideoProgress += 1;
+                    if (mockVideoProgress >= 100) {
+                        mockVideoProgress = 100;
+                        clearInterval(mockVideoTimer);
+                        isMockVideoPlaying = false;
+                        if (playPauseIcon) playPauseIcon.className = "fa-solid fa-rotate-right";
+                        if (bigPlayIcon) bigPlayIcon.className = "fa-solid fa-rotate-right ml-0";
+                        if (videoBigPlayBtn) videoBigPlayBtn.classList.remove('opacity-0', 'pointer-events-none');
+                        
+                        const classId = userProgress.currentClassId;
+                        if (!userProgress.completedResources.includes(`c${classId}_video`)) {
+                            markStep2Complete();
+                        }
+                    }
+                    if (progressBar) progressBar.style.width = `${mockVideoProgress}%`;
+                    const currentMinutes = Math.floor((mockVideoProgress / 100) * 10);
+                    const currentSeconds = Math.floor(((mockVideoProgress / 100) * 10 * 60) % 60);
+                    if (timeText) timeText.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds} / 10:00`;
+                }, 150);
+            }
+        }
+
+        function stopMockVideo() {
+            clearInterval(mockVideoTimer);
+            isMockVideoPlaying = false;
+            mockVideoProgress = 0;
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const bigPlayIcon = document.getElementById('bigPlayIcon');
+            const videoBigPlayBtn = document.getElementById('videoBigPlayBtn');
+            const progressBar = document.getElementById('videoProgressBar');
+            const timeText = document.getElementById('videoTimeText');
+
+            if (playPauseIcon) playPauseIcon.className = "fa-solid fa-play";
+            if (bigPlayIcon) bigPlayIcon.className = "fa-solid fa-play ml-1";
+            if (videoBigPlayBtn) videoBigPlayBtn.classList.remove('opacity-0', 'pointer-events-none');
+            if (progressBar) progressBar.style.width = "0%";
+            if (timeText) timeText.textContent = "0:00 / 10:00";
+        }
+
+        window.seekVideo = function(event) {
+            const track = document.getElementById('videoProgressTrack');
+            const rect = track.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const width = rect.width;
+            mockVideoProgress = Math.round((clickX / width) * 100);
+            
+            document.getElementById('videoProgressBar').style.width = `${mockVideoProgress}%`;
+            const currentMinutes = Math.floor((mockVideoProgress / 100) * 10);
+            const currentSeconds = Math.round(((mockVideoProgress / 100) * 10 * 60) % 60);
+            document.getElementById('videoTimeText').textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds} / 10:00`;
+        }
+
+        window.flipCard = function() {
+            const card = document.getElementById('vocabularyCard');
+            if (card) card.classList.toggle('rotate-y-180');
+        }
+
+        function loadVocabCard(cls, index) {
+            const vocab = cls.vocabulary[index];
+            if (!vocab) return;
+
+            const card = document.getElementById('vocabularyCard');
+            if (card) card.classList.remove('rotate-y-180');
+
+            setTimeout(() => {
+                document.getElementById('vocabTerm').textContent = vocab.term;
+                document.getElementById('vocabPronunciation').textContent = vocab.pronunciation;
+                document.getElementById('vocabTranslation').textContent = vocab.translation;
+                document.getElementById('vocabExample').textContent = vocab.example;
+                document.getElementById('vocabIndex').textContent = `${index + 1} de ${cls.vocabulary.length}`;
+            }, 100);
+        }
+
+        window.navigateVocab = function(direction) {
+            const cls = classesData.find(c => c.id === userProgress.currentClassId);
+            let nextIndex = userProgress.currentVocabIndex + direction;
+
+            if (nextIndex < 0) {
+                nextIndex = cls.vocabulary.length - 1;
+            } else if (nextIndex >= cls.vocabulary.length) {
+                nextIndex = 0;
+            }
+
+            userProgress.currentVocabIndex = nextIndex;
+            loadVocabCard(cls, nextIndex);
+        }
+
+        window.speakTerm = function(event) {
+            event.stopPropagation();
+            const term = document.getElementById('vocabTerm').textContent;
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(term);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("Voz no disponible", "Tu sistema no cuenta con motor de voz incorporado.", "fa-volume-xmark");
+            }
+        }
+
+        function renderQuiz(cls) {
+            const quizContainer = document.getElementById('quizContainer');
+            quizContainer.innerHTML = '';
+
+            const bestScore = userProgress.completedQuizzes[cls.id] || 0;
+
+            if (bestScore === 100) {
+                quizContainer.innerHTML = `
+                    <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm">
+                        <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm shadow-emerald-100">
+                            <i class="fa-solid fa-trophy text-2xl"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-black text-slate-900 text-base">¡Prueba Completada al 100%!</h5>
+                            <p class="text-xs text-slate-500 leading-relaxed mt-1">¡Buen trabajo camarero! Has respondido el cuestionario perfectamente. Ya dominas la teoría esencial de esta clase.</p>
+                        </div>
+                        <button onclick="retakeQuiz(${cls.id})" class="text-xs font-black text-emerald-800 bg-white hover:bg-emerald-50 border-2 border-emerald-300 px-5 py-3 rounded-2xl transition-all shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i> Realizar otro intento / Retake Quiz
+                        </button>
+                    </div>
+                `;
+            } else {
+                cls.quiz.forEach((q, qIndex) => {
+                    const questionBlock = document.createElement('div');
+                    questionBlock.className = "space-y-3 p-5 bg-slate-50/80 border-2 border-slate-200/60 rounded-3xl";
+                    questionBlock.id = `qBlock_${qIndex}`;
+                    
+                    questionBlock.innerHTML = `
+                        <p class="text-[10px] font-black text-orange-600 uppercase tracking-widest">Pregunta ${qIndex + 1} de ${cls.quiz.length}</p>
+                        <p class="text-xs sm:text-sm font-black text-slate-800 leading-snug">${q.question}</p>
+                        <div class="space-y-2.5 pt-1.5" id="optionsGroup_${qIndex}">
+                            ${q.options.map((opt, optIdx) => `
+                                <button onclick="selectOption(${cls.id}, ${qIndex}, ${optIdx})" 
+                                        class="w-full text-left p-3 rounded-2xl border-2 border-slate-200 text-xs font-bold hover:border-orange-400 hover:bg-orange-50/10 transition-colors bg-white flex items-center justify-between group shadow-sm"
+                                        id="optBtn_${qIndex}_${optIdx}">
+                                    <span>${opt}</span>
+                                    <div class="w-4 h-4 rounded-full border-2 border-slate-300 flex-shrink-0 group-hover:border-orange-500 bg-white"></div>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div id="explanation_${qIndex}" class="hidden p-3.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-500 leading-relaxed">
+                        </div>
+                    `;
+                    quizContainer.appendChild(questionBlock);
+                });
+
+                const submitBtn = document.createElement('button');
+                submitBtn.id = "submitQuizBtn";
+                submitBtn.className = "w-full py-4 bg-gradient-to-r from-yellow-500 via-orange-600 to-red-600 hover:opacity-95 text-white rounded-2xl text-xs font-black tracking-wider uppercase transition-colors shadow-md flex items-center justify-center gap-2";
+                submitBtn.onclick = () => checkQuizAnswers(cls.id);
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Evaluar respuestas / Evaluate`;
+                quizContainer.appendChild(submitBtn);
+            }
+        }
+
+        let currentSelections = {};
+
+        window.selectOption = function(classId, questionIndex, optionIndex) {
+            const cls = classesData.find(c => c.id === classId);
+            currentSelections[`q_${questionIndex}`] = optionIndex;
+
+            cls.quiz[questionIndex].options.forEach((_, optIdx) => {
+                const btn = document.getElementById(`optBtn_${questionIndex}_${optIdx}`);
+                if (btn) {
+                    btn.className = "w-full text-left p-3 rounded-2xl border-2 border-slate-200 text-xs font-bold hover:border-orange-400 hover:bg-orange-50/10 transition-colors bg-white flex items-center justify-between group shadow-sm";
+                    btn.querySelector('div').className = "w-4 h-4 rounded-full border-2 border-slate-300 flex-shrink-0 group-hover:border-orange-500 bg-white";
+                }
+            });
+
+            const selectedBtn = document.getElementById(`optBtn_${questionIndex}_${optionIndex}`);
+            if (selectedBtn) {
+                selectedBtn.className = "w-full text-left p-3 rounded-2xl border-2 border-orange-600 text-xs font-black bg-orange-50/20 text-orange-950 flex items-center justify-between shadow-sm";
+                selectedBtn.querySelector('div').className = "w-4 h-4 rounded-full border-4 border-orange-600 flex-shrink-0 bg-white";
+            }
+        }
+
+        window.checkQuizAnswers = function(classId) {
+            const cls = classesData.find(c => c.id === classId);
+            let totalQuestions = cls.quiz.length;
+            let correctAnswersCount = 0;
+            let allAnswered = true;
+
+            for (let i = 0; i < totalQuestions; i++) {
+                if (currentSelections[`q_${i}`] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+
+            if (!allAnswered) {
+                showToast("Preguntas Pendientes", "Responde todas las preguntas de servicio para calificar tu test.", "fa-triangle-exclamation text-amber-500");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitQuizBtn');
+            if (submitBtn) submitBtn.classList.add('hidden');
+
+            cls.quiz.forEach((q, idx) => {
+                const chosenIdx = currentSelections[`q_${idx}`];
+                const isCorrect = chosenIdx === q.answer;
+                const selectedBtn = document.getElementById(`optBtn_${idx}_${chosenIdx}`);
+                const explBlock = document.getElementById('explanation_' + idx);
+                
+                if (explBlock) explBlock.classList.remove('hidden');
+                
+                if (isCorrect) {
+                    correctAnswersCount++;
+                    if (selectedBtn) {
+                        selectedBtn.className = "w-full text-left p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-50/10 text-emerald-950 text-xs font-black flex items-center justify-between shadow-sm";
+                        selectedBtn.querySelector('div').className = "w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] flex-shrink-0";
+                        selectedBtn.querySelector('div').innerHTML = `<i class="fa-solid fa-check"></i>`;
+                    }
+                    if (explBlock) {
+                        explBlock.className = "p-3.5 bg-emerald-50 border border-emerald-100 rounded-2xl text-xs text-emerald-800 leading-relaxed";
+                        explBlock.innerHTML = `<strong>¡Excelente! / Correct:</strong> ${q.explanation}`;
+                    }
+                } else {
+                    if (selectedBtn) {
+                        selectedBtn.className = "w-full text-left p-3 rounded-2xl border-2 border-rose-500 bg-rose-50/10 text-rose-950 text-xs font-black flex items-center justify-between shadow-sm";
+                        selectedBtn.querySelector('div').className = "w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px] flex-shrink-0";
+                        selectedBtn.querySelector('div').innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+                    }
+                    const correctBtn = document.getElementById(`optBtn_${idx}_${q.answer}`);
+                    if (correctBtn) {
+                        correctBtn.className = "w-full text-left p-3 rounded-2xl border-2 border-emerald-400 bg-emerald-50/5 text-emerald-900 text-xs font-bold flex items-center justify-between shadow-sm";
+                    }
+                    if (explBlock) {
+                        explBlock.className = "p-3.5 bg-rose-50 border border-rose-100 rounded-2xl text-xs text-rose-800 leading-relaxed";
+                        explBlock.innerHTML = `<strong>Sugerencia de servicio / Advice:</strong> ${q.explanation}`;
+                    }
+                }
+            });
+
+            const score = Math.round((correctAnswersCount / totalQuestions) * 100);
+
+            if (!userProgress.quizAttempts[classId]) {
+                userProgress.quizAttempts[classId] = [];
+            }
+            userProgress.quizAttempts[classId].push(score);
+
+            const previousBest = userProgress.completedQuizzes[classId] || 0;
+            const newBest = Math.max(previousBest, score);
+            userProgress.completedQuizzes[classId] = newBest;
+
+            saveProgress();
+            renderAttemptsHistory(classId);
+
+            if (score === 100) {
+                triggerConfettiBurst();
+                playCelebrationSound();
+                showToast("¡Felicidades, 100%!", "Has superado la evaluación con puntaje perfecto.", "fa-trophy text-amber-500");
+                
+                setTimeout(() => {
+                    renderQuiz(cls);
+                    refreshHeaderRatio();
+                }, 3000);
+            } else {
+                playSuccessSound();
+                showToast("Prueba Evaluada", `Has obtenido un ${score}%. Recuerda que necesitas un 100% para completar el módulo.`, "fa-pencil-alt text-orange-500");
+                
+                const quizContainer = document.getElementById('quizContainer');
+                const retryActionBtn = document.createElement('button');
+                retryActionBtn.className = "w-full mt-4 py-3 bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 text-slate-700 rounded-2xl text-xs font-black transition-colors shadow-sm";
+                retryActionBtn.onclick = () => retakeQuiz(classId);
+                retryActionBtn.innerHTML = `<i class="fa-solid fa-arrow-rotate-left"></i> Reintentar Cuestionario / Try again`;
+                quizContainer.appendChild(retryActionBtn);
+            }
+        };
+
+        function renderAttemptsHistory(classId) {
+            const container = document.getElementById('attemptsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const attempts = userProgress.quizAttempts[classId] || [];
+            const bestScore = userProgress.completedQuizzes[classId] || 0;
+
+            const bestScoreEl = document.getElementById('bestScoreText');
+            if (bestScoreEl) bestScoreEl.textContent = `${bestScore}%`;
+
+            if (attempts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 text-slate-400">
+                        <i class="fa-solid fa-clipboard-list text-2xl mb-1.5 block opacity-60"></i>
+                        <span class="text-[10px] font-bold uppercase block">Sin intentos todavía</span>
+                    </div>
+                `;
+                return;
+            }
+
+            attempts.forEach((score, index) => {
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white text-xs shadow-sm";
+                
+                const statusBadge = score === 100 
+                    ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-lg font-black text-[10px] flex items-center gap-1"><i class="fa-solid fa-check"></i> Aprobado</span>`
+                    : `<span class="bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-lg font-black text-[10px] flex items-center gap-1"><i class="fa-solid fa-rotate-right"></i> Reintentar</span>`;
+
+                item.innerHTML = `
+                    <div>
+                        <span class="font-extrabold text-slate-800">Intento #${index + 1}</span>
+                        <p class="text-[9px] text-slate-400 font-semibold">Nota: ${score}%</p>
+                    </div>
+                    ${statusBadge}
+                `;
+                container.appendChild(item);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        window.retakeQuiz = function(classId) {
+            const cls = classesData.find(c => c.id === classId);
+            
+            cls.quiz.forEach((_, idx) => {
+                delete currentSelections[`q_${idx}`];
+            });
+
+            renderQuiz(cls);
+        }
+
+        function showToast(title, subtitle, iconClass = "fa-check-circle") {
+            const toast = document.getElementById('toastNotification');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastSubmessage = document.getElementById('toastSubmessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            if (toastMessage) toastMessage.textContent = title;
+            if (toastSubmessage) toastSubmessage.textContent = subtitle;
+            if (toastIcon) toastIcon.innerHTML = `<i class="fa-solid ${iconClass} text-xl"></i>`;
+
+            if (toast) toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
+            
+            setTimeout(() => {
+                if (toast) toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+</body>
+</html>
