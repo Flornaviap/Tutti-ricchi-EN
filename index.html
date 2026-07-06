@@ -316,39 +316,22 @@
 
                     <!-- Reproductor de Video Simulado Inteligente -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-                        <div class="lg:col-span-2 space-y-4">
-                            <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800 flex flex-col justify-end group">
-                                <!-- Fondo simulando miniatura -->
-                                <div class="absolute inset-0 bg-cover bg-center opacity-40" id="videoThumbnail" style="background-image: url('https://placehold.co/800x450/1e1b4b/ffffff?text=ESP+Class+Video');"></div>
-                                
-                                <!-- Botón central de Play Gigante -->
-                                <button onclick="toggleMockVideo()" id="videoBigPlayBtn" class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-orange-600 text-white flex items-center justify-center text-2xl shadow-md hover:bg-yellow-600 hover:scale-105 transition-transform z-10">
-                                    <i class="fa-solid fa-play ml-1" id="bigPlayIcon"></i>
-                                </button>
+    <div class="lg:col-span-2 space-y-4">
+        <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800">
+            
+            <iframe 
+                class="absolute top-0 left-0 w-full h-full" 
+                src="https://www.youtube.com/embed/IuNftDVx-kQ?rel=0&modestbranding=1" 
+                title="GREETINGS AT RESTAURANT ENGLISH CONVERSATION" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
 
-                                <!-- Controles del Reproductor -->
-                                <div class="bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 w-full relative z-10 opacity-95 flex flex-col gap-2">
-                                    <!-- Barra de progreso simulada -->
-                                    <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative" id="videoProgressTrack" onclick="seekVideo(event)">
-                                        <div class="bg-orange-500 h-full w-0" id="videoProgressBar"></div>
-                                    </div>
-                                    <div class="flex items-center justify-between text-white text-xs">
-                                        <div class="flex items-center gap-4">
-                                            <button onclick="toggleMockVideo()" class="hover:text-orange-400 transition-colors">
-                                                <i class="fa-solid fa-play" id="playPauseIcon"></i>
-                                            </button>
-                                            <span id="videoTimeText">0:00 / 10:00</span>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <i class="fa-solid fa-volume-high"></i>
-                                            <div class="w-16 bg-white/20 h-1 rounded-full overflow-hidden">
-                                                <div class="bg-white h-full w-4/5"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        </div>
+    </div>
+    
+    </div>
 
                         <!-- Estado y control de progreso del paso 2 -->
                         <div class="flex flex-col justify-between bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60">
