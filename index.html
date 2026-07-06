@@ -1435,22 +1435,20 @@
 
             const bestScore = userProgress.completedQuizzes[cls.id] || 0;
 
-            if (bestScore === 100) {
+             if (bestScore === 100) {
                 quizContainer.innerHTML = `
-                    <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm">
+                    <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm animate-fade-in">
                         <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm shadow-emerald-100">
                             <i class="fa-solid fa-trophy text-2xl"></i>
                         </div>
                         <div>
-                            <h5 class="font-black text-slate-900 text-base">¡Prueba Completada al 100%!</h5>
-                            <p class="text-xs text-slate-500 leading-relaxed mt-1">¡Buen trabajo camarero! Has respondido el cuestionario perfectamente. Ya dominas la teoría esencial de esta clase.</p>
+                            <h5 class="font-black text-emerald-950 text-base">¡Prueba Completada al 100%!</h5>
+                            <p class="text-xs text-emerald-800 leading-relaxed mt-1 font-medium">¡Buen trabajo camarero! Has respondido el cuestionario perfectamente. Ya dominas la teoría esencial de esta clase.</p>
                         </div>
-                        <button onclick="retakeQuiz(${cls.id})" class="text-xs font-black text-emerald-800 bg-white hover:bg-emerald-50 border-2 border-emerald-300 px-5 py-3 rounded-2xl transition-all shadow-sm">
-                            <i class="fa-solid fa-rotate-left"></i> Realizar otro intento / Retake Quiz
-                        </button>
                     </div>
                 `;
-            } else {
+             } 
+             else {
                 cls.quiz.forEach((q, qIndex) => {
                     const questionBlock = document.createElement('div');
                     questionBlock.className = "space-y-3 p-5 bg-slate-50/80 border-2 border-slate-200/60 rounded-3xl";
