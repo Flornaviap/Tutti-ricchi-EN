@@ -129,9 +129,13 @@
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         
         <!-- Pantalla de Inicio / Dashboard -->
-        <div class="bg-gradient-to-r from-slate-900 via-orange-950 to-red-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div id="dashboardSection" class="space-y-10">
+            
+            <!-- Banner de Bienvenida con Video Introductorio Vertical -->
+            <div class="bg-gradient-to-r from-slate-900 via-orange-950 to-red-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative z-10">
                     
+                    <!-- Información del Curso (Izquierda) -->
                     <div class="lg:col-span-2 space-y-4">
                         <span class="bg-gradient-to-r from-amber-500 to-red-500 text-white text-[11px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-block border border-white/20 shadow-sm">
                             ¡Aprende inglés para dar un servicio de 5 estrellas en Tutti Ricchi!
@@ -146,6 +150,7 @@
                             <strong>**Regla de oro**</strong>: Debes completar el 100% de cada clase (Vocabulario/Gramática, ver el Video y aprobar el Test con el 100%) para poder desbloquear la siguiente lección. Let's start!
                         </p>
                         
+                        <!-- Barra de progreso general del curso -->
                         <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-inner mt-6">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-xs sm:text-sm font-extrabold text-orange-200 uppercase tracking-widest">Progreso total del entrenamiento / Total Course Progress</span>
@@ -165,6 +170,7 @@
                         </div>
                     </div>
 
+                    <!-- Contenedor del Video Vertical (Derecha) -->
                     <div class="flex justify-center w-full">
                         <div class="w-full max-w-[280px] aspect-[9/16] bg-slate-950 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10 relative group">
                             <iframe class="w-full h-full" 
@@ -200,7 +206,7 @@
                     <!-- Las clases se cargarán dinámicamente con JS -->
                 </div>
             </div>
-        </div>
+        </div> <!-- ¡AQUÍ ESTÁ EL CIERRE CORRECTO DEL DASHBOARD! -->
 
         <!-- Seccion de detalle de cada clase -->
         <div id="classDetailSection" class="hidden space-y-8">
