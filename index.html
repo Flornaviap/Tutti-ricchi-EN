@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English for Waiters - Plataforma de Aprendizaje ESP - Tutti Ricchi</title>
+    <title>English for Waiters - Plata de Aprendizaje ESP - Tutti Ricchi</title>
     <!-- Silenciador de la advertencia de producción del Play CDN de Tailwind -->
     <script>
         (function() {
@@ -628,7 +628,7 @@
                     { term: "For you?", translation: "¿Para usted?", pronunciation: "/fɔːr juː/", example: "And for you, sir?" },
                     { term: "Perfect choice!", translation: "¡Excelente elección!", pronunciation: "/ˈpɜː.fɪkt tʃɔɪs/", example: "Perfect choice! The Guatita is delicious." },
                     { term: "How much is it?", translation: "¿Cuánto cuesta? / ¿Qué precio tiene?", pronunciation: "/haʊ mʌtʃ ɪz ɪt/", example: "The customer asks: 'How much is it?'" },
-                    { term: "Is it spicy?", translation: "¿Es picante?", pronunciation: "/ɪz ɪt ˈspaɪ.si/", example: "Excuse me, is it spicy?" },
+                    { term: "Is it spicy?", translation: "¿Es picante?", pronunciation: "/|z |t ˈspaɪ.si/", example: "Excuse me, is it spicy?" },
                     { term: "Does it have peanuts?", translation: "¿Tiene maní? (Vital para la Guatita o las Patitas)", pronunciation: "/dʌz ɪt hæv ˈpiː.nʌts/", example: "Does it have peanuts? I am allergic." },
                     { term: "Does it have seafood?", translation: "¿Tiene mariscos?", pronunciation: "/dʌz ɪt hæv ˈsiː.fuːd/", example: "The tourist asks: Does it have seafood?" },
                     { term: "Yes, of course.", translation: "Sí, por supuesto.", pronunciation: "/jes ɒv kɔːs/", example: "Yes, of course, I will bring it." },
@@ -728,7 +728,7 @@
                     { term: "The bill, please", translation: "La cuenta, por favor", pronunciation: "/ðə bɪl pliːz/", example: "The customer says: 'The bill, please!'" },
                     { term: "How would you like to pay?", translation: "¿Cómo le gustaría pagar?", pronunciation: "/haʊ wʊd juː laɪk tuː peɪ/", example: "How would you like to pay? Cash or card?" },
                     { term: "Cash or credit card?", translation: "¿Efectivo o tarjeta de crédito?", pronunciation: "/kæʃ ɔːr ˈkred.ɪt kɑːd/", example: "Will you pay by cash or credit card?" },
-                    { term: "Here is your receipt", translation: "Aquí tiene su recibo", pronunciation: "/hɪər ɪz jɔːr rɪˈsiːt/", example: "Here is your receipt. Thank you!" },
+                    { term: "Here is your receipt", translation: "Aquí tiene su recibo", pronunciation: "/hɪər ɪz jɔːr rɪˈsiːt/", example: "Aquí tiene su recibo. ¡Gracias!" },
                     { term: "Here is your change", translation: "Aquí tiene su cambio / vuelto", pronunciation: "/hɪər ɪz jɔːr tʃeɪndʒ/", example: "You paid with cash, so here is your change." },
                     { term: "Thank you for coming!", translation: "¡Gracias por venir!", pronunciation: "/θæŋk juː fɔːr ˈkʌm.ɪŋ/", example: "Thank you for coming! We hope you enjoyed Tutti Ricchi!" },
                     { term: "Come back soon!", translation: "¡Vuelva pronto!", pronunciation: "/kʌm bæk suːn/", example: "Goodbye! Come back soon!" },
@@ -780,10 +780,10 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-                gain.gain.setValueAtTime(0.04, audioCtx.currentTime); // Volumen optimizado
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime); 
                 osc.start();
-                osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.08, 0.12); // A5
+                osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.08, 0.12); 
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
                 osc.stop(audioCtx.currentTime + 0.25);
             } catch(e) {
@@ -829,7 +829,7 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * -canvas.height - 15;
-                this.size = Math.random() * 6 + 4; // Tamaño optimizado para reducir área de pintura
+                this.size = Math.random() * 6 + 4; 
                 this.color = `hsl(${Math.random() * 360}, 85%, 55%)`;
                 this.speedY = Math.random() * 3.5 + 2.5;
                 this.speedX = Math.random() * 2 - 1;
@@ -853,7 +853,6 @@
 
         function triggerConfettiBurst() {
             confettiArray = [];
-            // Cantidad reducida de 150 a 65 para alto desempeño móvil y excelente look
             for (let i = 0; i < 65; i++) {
                 confettiArray.push(new Confetti());
             }
@@ -877,7 +876,7 @@
                 animationFrameId = requestAnimationFrame(animateConfetti);
             } else {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                confettiArray = []; // Liberar memoria
+                confettiArray = []; 
             }
         }
 
@@ -1181,7 +1180,7 @@
 
             const hasVocab = userProgress.completedResources.includes(`c${cls.id}_vocab_grammar`) ? 1 : 0;
             const hasVideo = userProgress.completedResources.includes(`c${cls.id}_video`) ? 1 : 0;
-            const bestScore = userProgress.completedQuizzes[cls.id] || 0;
+            const bestScore = userProgress.completedQuizzes[classId] || 0;
             const hasQuizApproved = bestScore === 100 ? 1 : 0;
             const totalStepsCompleted = hasVocab + hasVideo + hasQuizApproved;
 
@@ -1214,6 +1213,9 @@
 
             updateStepsLockState(cls.id);
             loadVocabCard(cls, 0);
+            
+            // Forzar reseteo de la selección del quiz para evitar bugs de persistencia visual
+            currentSelections = {};
             renderQuiz(cls);
             renderAttemptsHistory(cls.id);
         }
@@ -1453,7 +1455,7 @@
             } else {
                 cls.quiz.forEach((q, qIndex) => {
                     const questionBlock = document.createElement('div');
-                    questionBlock.className = "space-y-3 p-5 bg-slate-50/80 border-2 border-slate-200/60 rounded-3xl";
+                    questionBlock.className = "space-y-3 p-5 bg-slate-50/80 border-2 border-slate-200/60 rounded-3xl mb-4";
                     questionBlock.id = `qBlock_${qIndex}`;
                     
                     questionBlock.innerHTML = `
@@ -1469,7 +1471,7 @@
                                 </button>
                             `).join('')}
                         </div>
-                        <div id="explanation_${qIndex}" class="hidden p-3.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-500 leading-relaxed">
+                        <div id="explanation_${qIndex}" class="hidden p-3.5 bg-white border border-slate-200 rounded-2xl text-xs text-slate-500 leading-relaxed mt-2">
                         </div>
                     `;
                     quizContainer.appendChild(questionBlock);
@@ -1477,7 +1479,7 @@
 
                 const submitBtn = document.createElement('button');
                 submitBtn.id = "submitQuizBtn";
-                submitBtn.className = "w-full py-4 bg-gradient-to-r from-yellow-500 via-orange-600 to-red-600 hover:opacity-95 text-white rounded-2xl text-xs font-black tracking-wider uppercase transition-colors shadow-md flex items-center justify-center gap-2";
+                submitBtn.className = "w-full py-4 bg-gradient-to-r from-yellow-500 via-orange-600 to-red-600 hover:opacity-95 text-white rounded-2xl text-xs font-black tracking-wider uppercase transition-colors shadow-md flex items-center justify-center gap-2 mt-4";
                 submitBtn.onclick = () => checkQuizAnswers(cls.id);
                 submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Evaluar respuestas / Evaluate`;
                 quizContainer.appendChild(submitBtn);
@@ -1542,7 +1544,7 @@
                         selectedBtn.querySelector('div').innerHTML = `<i class="fa-solid fa-check"></i>`;
                     }
                     if (explBlock) {
-                        explBlock.className = "p-3.5 bg-emerald-50 border border-emerald-100 rounded-2xl text-xs text-emerald-800 leading-relaxed";
+                        explBlock.className = "p-3.5 bg-emerald-50 border border-emerald-100 rounded-2xl text-xs text-emerald-800 leading-relaxed mt-2";
                         explBlock.innerHTML = `<strong>¡Excelente! / Correct:</strong> ${q.explanation}`;
                     }
                 } else {
@@ -1556,7 +1558,7 @@
                         correctBtn.className = "w-full text-left p-3 rounded-2xl border-2 border-emerald-400 bg-emerald-50/5 text-emerald-900 text-xs font-bold flex items-center justify-between shadow-sm";
                     }
                     if (explBlock) {
-                        explBlock.className = "p-3.5 bg-rose-50 border border-rose-100 rounded-2xl text-xs text-rose-800 leading-relaxed";
+                        explBlock.className = "p-3.5 bg-rose-50 border border-rose-100 rounded-2xl text-xs text-rose-800 leading-relaxed mt-2";
                         explBlock.innerHTML = `<strong>Sugerencia de servicio / Advice:</strong> ${q.explanation}`;
                     }
                 }
@@ -1581,6 +1583,7 @@
                 playCelebrationSound();
                 showToast("¡Felicidades, 100%!", "Has superado la evaluación con puntaje perfecto.", "fa-trophy text-amber-500");
                 
+                // Limpiamos por completo el contenedor para que no se dupliquen ni queden botones residuales de intentos fallidos previos
                 setTimeout(() => {
                     renderQuiz(cls);
                     refreshHeaderRatio();
@@ -1590,8 +1593,15 @@
                 showToast("Prueba Evaluada", `Has obtenido un ${score}%. Recuerda que necesitas un 100% para completar el módulo.`, "fa-pencil-alt text-orange-500");
                 
                 const quizContainer = document.getElementById('quizContainer');
+                
+                // Eliminamos cualquier botón de reintento previo antes de duplicar uno nuevo en pantalla
+                const existingRetryBtn = quizContainer.querySelector('.retry-btn-action');
+                if (existingRetryBtn) {
+                    existingRetryBtn.remove();
+                }
+                
                 const retryActionBtn = document.createElement('button');
-                retryActionBtn.className = "w-full mt-4 py-3 bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 text-slate-700 rounded-2xl text-xs font-black transition-colors shadow-sm";
+                retryActionBtn.className = "retry-btn-action w-full mt-4 py-3 bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 text-slate-700 rounded-2xl text-xs font-black transition-colors shadow-sm";
                 retryActionBtn.onclick = () => retakeQuiz(classId);
                 retryActionBtn.innerHTML = `<i class="fa-solid fa-arrow-rotate-left"></i> Reintentar Cuestionario / Try again`;
                 quizContainer.appendChild(retryActionBtn);
@@ -1621,7 +1631,7 @@
 
             attempts.forEach((score, index) => {
                 const item = document.createElement('div');
-                item.className = "flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white text-xs shadow-sm";
+                item.className = "flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white text-xs shadow-sm mb-2";
                 
                 const statusBadge = score === 100 
                     ? `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-lg font-black text-[10px] flex items-center gap-1"><i class="fa-solid fa-check"></i> Aprobado</span>`
