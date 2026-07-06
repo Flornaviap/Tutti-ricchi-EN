@@ -1499,15 +1499,14 @@
             }
         }
 
-        function renderQuiz(cls) {
-            const quizContainer = document.getElementById('quizContainer');
+      function renderQuiz(cls) {
+        const quizContainer = document.getElementById('quizContainer');
             quizContainer.innerHTML = '';
 
             const bestScore = userProgress.completedQuizzes[cls.id] || 0;
 
             if (bestScore === 100) {
                 let googleFormsHTML = '';
-                
                 if (cls.id === 1) {
                     googleFormsHTML = `
                         <div class="mt-8 pt-6 border-t border-slate-200 text-left space-y-4">
@@ -1556,10 +1555,13 @@
                         <p class="text-xs sm:text-sm font-black text-slate-800 leading-snug">${q.question}</p>
                         <div class="space-y-2.5 pt-1.5" id="optionsGroup_${qIndex}">
                             ${q.options.map((opt, optIdx) => {
+                                // Corregido: Variable unificada con minúscula para evitar errores en consola
                                 const tieneAudio = cls.id === 1 || opt.match(/[a-zA-Z]/);
+                                // Corregido: Limpieza segura de comisiones para el motor TTS
+                                const textoLimpio = opt.replace(/'/g, "");
                                 
                                 return `
-                                    <button onclick="selectOption(${cls.id}, ${qIndex}, ${optIdx}); speakQuizOption('${opt.replace(/'/g, "\\'")}')" 
+                                    <button onclick="selectOption(${cls.id}, ${qIndex}, ${optIdx}); speakQuizOption('${textoLimpio}')" 
                                             class="w-full text-left p-3 rounded-2xl border-2 border-slate-200 text-xs font-bold hover:border-orange-400 hover:bg-orange-50/10 transition-colors bg-white flex items-center justify-between group shadow-sm"
                                             id="optBtn_${qIndex}_${optIdx}">
                                         <span class="flex items-center gap-2">
@@ -1588,7 +1590,7 @@
 
         window.speakQuizOption = function(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); 
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'en-US';
                 utterance.rate = 0.85; 
