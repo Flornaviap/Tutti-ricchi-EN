@@ -971,7 +971,8 @@
         }
 
         function isClassUnlocked(classId) {
-            if (classId === 1) return true;
+            // Forzamos a que la Clase 1 nunca se bloquee a sí misma
+            if (parseInt(classId) === 1) return true;
             return isClassFinished(classId - 1);
         }
 
