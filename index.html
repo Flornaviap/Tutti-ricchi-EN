@@ -232,8 +232,8 @@
                                             </button>
                                         </div>
                                         <div class="text-center my-auto">
-                                            <h5 id="vocabTerm" class="text-2xl font-black tracking-tight mb-1">Good morning</h5>
-                                            <p class="text-xs text-orange-200 italic" id="vocabPronunciation">/ɡʊd ˈmɔː.nɪŋ/</p>
+                                            <h5 id="vocabTerm" class="text-2xl font-black tracking-tight mb-1">Welcome</h5>
+                                            <p class="text-xs text-orange-200 italic" id="vocabPronunciation">/ˈwel.kəm/</p>
                                         </div>
                                         <div class="text-center text-[10px] text-orange-300 flex items-center justify-center gap-2 bg-orange-950/40 py-2 rounded-xl border border-orange-500/15">
                                             <span>Toca para ver el significado en Español</span>
@@ -251,11 +251,11 @@
                                         <div class="my-auto space-y-2 text-left">
                                             <div>
                                                 <span class="text-[9px] text-slate-500 block uppercase font-bold tracking-wider">Traducción</span>
-                                                <p id="vocabTranslation" class="text-lg font-extrabold text-amber-300">Buenos días</p>
+                                                <p id="vocabTranslation" class="text-lg font-extrabold text-amber-300">Bienvenido / Dar la bienvenida</p>
                                             </div>
                                             <div>
                                                 <span class="text-[9px] text-slate-500 block uppercase font-bold tracking-wider">Ejemplo en Servicio</span>
-                                                <p id="vocabExample" class="text-xs text-slate-200 italic leading-relaxed">"Good morning! Welcome to Tutti Ricchi!"</p>
+                                                <p id="vocabExample" class="text-xs text-slate-200 italic leading-relaxed">"Welcome to our restaurant! Let me show you to your table."</p>
                                             </div>
                                         </div>
                                         <div class="text-center text-[10px] text-slate-400 flex items-center justify-center gap-1.5 bg-white/5 py-2 rounded-xl">
@@ -269,7 +269,7 @@
                                 <button onclick="navigateVocab(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors">
                                     <i class="fa-solid fa-chevron-left text-sm"></i>
                                 </button>
-                                <span class="text-xs font-extrabold text-slate-600 bg-white px-3 py-1.5 rounded-full border border-slate-200" id="vocabIndex">1 de 12</span>
+                                <span class="text-xs font-extrabold text-slate-600 bg-white px-3 py-1.5 rounded-full border border-slate-200" id="vocabIndex">1 de 5</span>
                                 <button onclick="navigateVocab(1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors">
                                     <i class="fa-solid fa-chevron-right text-sm"></i>
                                 </button>
@@ -316,22 +316,39 @@
 
                     <!-- Reproductor de Video Simulado Inteligente -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-    <div class="lg:col-span-2 space-y-4">
-        <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800">
-            
-            <iframe 
-                class="absolute top-0 left-0 w-full h-full" 
-                src="https://www.youtube.com/embed/IuNftDVx-kQ?rel=0&modestbranding=1" 
-                title="GREETINGS AT RESTAURANT ENGLISH CONVERSATION" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-            </iframe>
+                        <div class="lg:col-span-2 space-y-4">
+                            <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800 flex flex-col justify-end group">
+                                <!-- Fondo simulando miniatura -->
+                                <div class="absolute inset-0 bg-cover bg-center opacity-40" id="videoThumbnail" style="background-image: url('https://placehold.co/800x450/1e1b4b/ffffff?text=ESP+Class+Video');"></div>
+                                
+                                <!-- Botón central de Play Gigante -->
+                                <button onclick="toggleMockVideo()" id="videoBigPlayBtn" class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-orange-600 text-white flex items-center justify-center text-2xl shadow-md hover:bg-yellow-600 hover:scale-105 transition-transform z-10">
+                                    <i class="fa-solid fa-play ml-1" id="bigPlayIcon"></i>
+                                </button>
 
-        </div>
-    </div>
-    
-    </div>
+                                <!-- Controles del Reproductor -->
+                                <div class="bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 w-full relative z-10 opacity-95 flex flex-col gap-2">
+                                    <!-- Barra de progreso simulada -->
+                                    <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative" id="videoProgressTrack" onclick="seekVideo(event)">
+                                        <div class="bg-orange-500 h-full w-0" id="videoProgressBar"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-white text-xs">
+                                        <div class="flex items-center gap-4">
+                                            <button onclick="toggleMockVideo()" class="hover:text-orange-400 transition-colors">
+                                                <i class="fa-solid fa-play" id="playPauseIcon"></i>
+                                            </button>
+                                            <span id="videoTimeText">0:00 / 10:00</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                            <div class="w-16 bg-white/20 h-1 rounded-full overflow-hidden">
+                                                <div class="bg-white h-full w-4/5"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Estado y control de progreso del paso 2 -->
                         <div class="flex flex-col justify-between bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60">
@@ -1420,14 +1437,17 @@
 
             if (bestScore === 100) {
                 quizContainer.innerHTML = `
-                    <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm animate-fade-in">
+                    <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm">
                         <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm shadow-emerald-100">
                             <i class="fa-solid fa-trophy text-2xl"></i>
                         </div>
                         <div>
-                            <h5 class="font-black text-emerald-950 text-base">¡Prueba Completada al 100%!</h5>
-                            <p class="text-xs text-emerald-800 leading-relaxed mt-1 font-medium">¡Buen trabajo camarero! Has respondido el cuestionario perfectamente. Ya dominas la teoría esencial de esta clase.</p>
+                            <h5 class="font-black text-slate-900 text-base">¡Prueba Completada al 100%!</h5>
+                            <p class="text-xs text-slate-500 leading-relaxed mt-1">¡Buen trabajo camarero! Has respondido el cuestionario perfectamente. Ya dominas la teoría esencial de esta clase.</p>
                         </div>
+                        <button onclick="retakeQuiz(${cls.id})" class="text-xs font-black text-emerald-800 bg-white hover:bg-emerald-50 border-2 border-emerald-300 px-5 py-3 rounded-2xl transition-all shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i> Realizar otro intento / Retake Quiz
+                        </button>
                     </div>
                 `;
             } else {
@@ -1626,6 +1646,7 @@
             cls.quiz.forEach((_, idx) => {
                 delete currentSelections[`q_${idx}`];
             });
+
             renderQuiz(cls);
         }
 
