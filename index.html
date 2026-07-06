@@ -129,41 +129,54 @@
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         
         <!-- Pantalla de Inicio / Dashboard -->
-        <div id="dashboardSection" class="space-y-10">
-            <!-- Banner de Bienvenida -->
-            <div class="bg-gradient-to-r from-slate-900 via-orange-950 to-red-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
-                <div class="relative z-10 max-w-3xl space-y-4">
-                    <span class="bg-gradient-to-r from-amber-500 to-red-500 text-white text-[11px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-block border border-white/20 shadow-sm">
-                        ¡Aprende inglés para dar un servicio de 5 estrellas en Tutti Ricchi!
-                    </span>
-                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-                        Welcome, <span id="welcomeStudentName" class="bg-gradient-to-r from-amber-300 via-orange-400 to-red-300 bg-clip-text text-transparent">Personal de Servicio</span>! 🍽️
-                    </h2>
-                    <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
-                        Aprende el inglés práctico necesario para comunicarte con comensales extranjeros en Tutti Ricchi. 
-                    </p>
-                    <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
-                        <strong>**Regla de oro**</strong>: Debes completar el 100% de cada clase (Vocabulario/Gramática, ver el Video y aprobar el Test con el 100%) para poder desbloquear la siguiente lección. Let's start!
-                    </p>
+        <div class="bg-gradient-to-r from-slate-900 via-orange-950 to-red-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative z-10">
                     
-                    <!-- Barra de progreso general del curso -->
-                    <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-inner mt-6">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs sm:text-sm font-extrabold text-orange-200 uppercase tracking-widest">Progreso total del entrenamiento / Total Course Progress</span>
-                            <span class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5" id="overallPercent">
-                                <i class="fa-solid fa-trophy"></i> 0% Completado
-                            </span>
-                        </div>
-                        <div class="w-full bg-slate-950/80 rounded-full h-4 overflow-hidden p-0.5 border border-white/5">
-                            <div id="overallProgressBar" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-2.5 rounded-full transition-all duration-700 shadow-sm" style="width: 0%"></div>
-                        </div>
-                        <div class="flex justify-between items-center mt-3 text-[11px] text-orange-300 font-bold">
-                            <span id="overallClassCount">0 de 6 Clases superadas</span>
-                            <button id="resetProgressBtn" class="hover:text-red-400 transition-colors flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
-                                <i class="fa-solid fa-rotate-right"></i> Reiniciar Progreso
-                            </button>
+                    <div class="lg:col-span-2 space-y-4">
+                        <span class="bg-gradient-to-r from-amber-500 to-red-500 text-white text-[11px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-block border border-white/20 shadow-sm">
+                            ¡Aprende inglés para dar un servicio de 5 estrellas en Tutti Ricchi!
+                        </span>
+                        <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                            Welcome, <span id="welcomeStudentName" class="bg-gradient-to-r from-amber-300 via-orange-400 to-red-300 bg-clip-text text-transparent">Personal de Servicio</span>! 🍽️
+                        </h2>
+                        <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
+                            Aprende el inglés práctico necesario para comunicarte con comensales extranjeros en Tutti Ricchi.
+                        </p>
+                        <p class="text-orange-100 text-sm sm:text-base leading-relaxed">
+                            <strong>**Regla de oro**</strong>: Debes completar el 100% de cada clase (Vocabulario/Gramática, ver el Video y aprobar el Test con el 100%) para poder desbloquear la siguiente lección. Let's start!
+                        </p>
+                        
+                        <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-inner mt-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs sm:text-sm font-extrabold text-orange-200 uppercase tracking-widest">Progreso total del entrenamiento / Total Course Progress</span>
+                                <span class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5" id="overallPercent">
+                                    <i class="fa-solid fa-trophy"></i> 0% Completado
+                                </span>
+                            </div>
+                            <div class="w-full bg-slate-950/80 rounded-full h-4 overflow-hidden p-0.5 border border-white/5">
+                                <div id="overallProgressBar" class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-2.5 rounded-full transition-all duration-700 shadow-sm" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 text-[11px] text-orange-300 font-bold">
+                                <span id="overallClassCount">0 de 6 Clases superadas</span>
+                                <button id="resetProgressBtn" class="hover:text-red-400 transition-colors flex items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                                    <i class="fa-solid fa-rotate-right"></i> Reiniciar Progreso
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="flex justify-center w-full">
+                        <div class="w-full max-w-[280px] aspect-[9/16] bg-slate-950 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10 relative group">
+                            <iframe class="w-full h-full" 
+                                    src="https://www.youtube.com/embed/AY2WHloOQ4g?rel=0&loop=1&playlist=AY2WHloOQ4g" 
+                                    title="Video Introductorio" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -1486,7 +1499,34 @@
             const bestScore = userProgress.completedQuizzes[cls.id] || 0;
 
             if (bestScore === 100) {
-                // He eliminado el <button> que aparecía debajo del texto de felicitaciones
+                // Si la prueba está superada al 100%, evaluamos si es la Clase 1 para añadir su Google Forms
+                let googleFormsHTML = '';
+                
+                if (cls.id === 1) {
+                    googleFormsHTML = `
+                        <div class="mt-8 pt-6 border-t border-slate-200 text-left space-y-4">
+                            <div class="bg-orange-50 border border-orange-200 rounded-2xl p-4 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center text-lg shadow-sm">
+                                    <i class="fa-solid fa-file-signature"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-xs font-black text-slate-900">Formulario Oficial de Registro / Official Sign-in</h6>
+                                    <p class="text-[11px] text-slate-500 leading-tight">Por favor, completa el siguiente formulario para guardar tu asistencia y calificación en la base de datos de Tutti Ricchi.</p>
+                                </div>
+                            </div>
+                            <div class="w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-white" style="height: 600px;">
+                                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfznO0v875VLWSU-ikcNpnfTjNZ3kbAoi41EBmK6kCXHIlYmQ/viewform?usp=sharing&ouid=109585652391934096915" 
+                                        class="w-full h-full" 
+                                        frameborder="0" 
+                                        marginheight="0" 
+                                        marginwidth="0">
+                                    Cargando formulario…
+                                </iframe>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 quizContainer.innerHTML = `
                     <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm">
                         <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm shadow-emerald-100">
@@ -1496,6 +1536,7 @@
                             <h5 class="font-black text-slate-900 text-base">¡Prueba Completada al 100%!</h5>
                             <p class="text-xs text-slate-500 leading-relaxed mt-1">¡Buen trabajo camarero! Has respondido el cuestionario perfectamente. Ya dominas la teoría esencial de esta clase.</p>
                         </div>
+                        ${googleFormsHTML}
                     </div>
                 `;
             } else {
