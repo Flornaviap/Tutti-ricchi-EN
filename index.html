@@ -1507,18 +1507,25 @@ if (mediaContainer) {
         }
 
         window.speakTerm = function(event) {
-            event.stopPropagation();
-            const term = document.getElementById('vocabTerm').textContent;
-            
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(term);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85; 
-                window.speechSynthesis.speak(utterance);
-            } else {
-                showToast("Voz no disponible", "Tu sistema no cuenta con motor de voz incorporado.", "fa-volume-xmark");
-            }
-        }
+    if (event) event.stopPropagation();
+    const term = document.getElementById('vocabTerm').textContent;
+    
+    if ('speechSynthesis' in window) {
+        // Cancela cualquier audio previo que esté trabado en cola
+        window.speechSynthesis.cancel();
+
+        setTimeout(() => {
+            const utterance = new SpeechSynthesisUtterance(term);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.85; 
+
+            // Para dispositivos con menos memoria, usamos la voz nativa predeterminada
+            window.speechSynthesis.speak(utterance);
+        }, 50);
+    } else {
+        showToast("Voz no disponible", "Tu sistema no cuenta con motor de voz incorporado.", "fa-volume-xmark");
+    }
+}
 
       function renderQuiz(cls) {
         const quizContainer = document.getElementById('quizContainer');
@@ -1610,15 +1617,18 @@ if (mediaContainer) {
         }
 
         window.speakQuizOption = function(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85; 
-                window.speechSynthesis.speak(utterance);
-            }
-        }
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
 
+        // Evita saturar el procesador esperando a que finalice la animación del clic
+        setTimeout(() => {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.85;
+            window.speechSynthesis.speak(utterance);
+        }, 80);
+    }
+}
         let currentSelections = {};
 
         window.selectOption = function(classId, questionIndex, optionIndex) {
