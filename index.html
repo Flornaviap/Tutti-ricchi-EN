@@ -324,7 +324,24 @@
                         </div>
                     </div>
                 </div>
+<!-- NUEVO APARTADO: DIAPOSITIVAS DE LA CLASE -->
+                <div id="stepSlidesBlock" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center text-xl shadow-md">
+                            <i class="fa-solid fa-person-chalkboard"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-black text-slate-900">Diapositivas de la Clase / Class Slides</h4>
+                            <p class="text-xs text-slate-500">Review the class presentation / Repasa el material visual de apoyo (PDF o PowerPoint).</p>
+                        </div>
+                    </div>
 
+                    <!-- Contenedor Dinámico del Botón/Tarjeta de Drive -->
+                    <div id="slidesContainer" class="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center relative z-10">
+                        <!-- Se poblará dinámicamente con JavaScript -->
+                    </div>
+                </div>
+              
                 <!-- PASO 2: CLASE GRABADA / VIDEO SESIÓN -->
                 <div id="step2Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
                     <div class="flex items-center gap-4 mb-6 relative z-10">
@@ -485,6 +502,8 @@
                 title: "Class 1: Welcoming and Table Seating",
                 subtitle: "Bienvenida y Ubicación de Clientes",
                 desc: "Aprende el arte de recibir a los clientes con cortesía en Tutti Ricchi, preguntar por el tamaño del grupo y guiarlos a sus asientos.",
+              // ---> PEGA AQUÍ TU ENLACE DE CANVA DE LA CLASE 1 <---
+                slidesUrl: "https://www.canva.com/design/DAHP2bzCbv8/Hhq1RdxB1CsRljpvmmCqyg/view",
                 grammar: {
                     title: "Polite Greetings and Directives / Saludos y Mandatos Educados",
                     desc: "Para dar la bienvenida, utiliza siempre un tono alegre y formal: <strong>'Welcome to Tutti Ricchi!'</strong>. Al preguntar el número de personas, usa la fórmula directa y educada: <strong>'How many people?'</strong>. Al guiarlos, diles con una sonrisa: <strong>'This way, please'</strong> (Por aquí, por favor) y al ofrecerles el asiento: <strong>'Have a seat, please.'</strong>"
@@ -1300,6 +1319,62 @@ if (mediaContainer) {
         stopMockVideo();
     }
 }
+// --- CARGA DINÁMICA DE DIAPOSITIVAS DE CANVA ---
+    const slidesContainer = document.getElementById('slidesContainer');
+    if (slidesContainer) {
+        if (cls.slidesUrl) {
+            // Limpia y asegura el enlace para incrustación interactiva en iframe
+            let embedCanvaUrl = cls.slidesUrl;
+            
+            // Si se pegó todo el bloque <iframe> de Canva, se extrae únicamente el link del atributo src
+            const srcMatch = embedCanvaUrl.match(/src="([^"]+)"/);
+            if (srcMatch) {
+                embedCanvaUrl = srcMatch[1];
+            } else {
+                // Si es un enlace estándar, se fuerza la terminación /view?embed requerida por Canva
+                embedCanvaUrl = embedCanvaUrl.replace(/\/(view|edit|watch).*$/, '/view?embed');
+            }
+
+            slidesContainer.innerHTML = `
+                <div class="space-y-4">
+                    <!-- Barra superior con información y botón de respaldo -->
+                    <div class="flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-3 text-left">
+                            <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 text-white flex items-center justify-center text-base flex-shrink-0 shadow-sm">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-black text-slate-800">Presentación Interactiva - Clase 0${cls.id}</h5>
+                                <p class="text-[10px] text-slate-400">Diseñado con Canva • Usa las flechas para cambiar de diapositiva</p>
+                            </div>
+                        </div>
+                        <a href="${cls.slidesUrl}" target="_blank" rel="noopener noreferrer" 
+                           class="text-[11px] font-extrabold text-purple-600 hover:text-purple-800 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 flex-shrink-0"
+                           title="Abrir presentación en Canva en una pestaña nueva">
+                            <span>Ver en Canva</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- Visor integrado de Canva (Proporción 16:9 ideal para presentaciones) -->
+                    <div class="w-full aspect-video rounded-2xl overflow-hidden border-2 border-slate-200 shadow-lg bg-slate-900 relative flex items-center justify-center">
+                        <iframe src="${embedCanvaUrl}" 
+                                class="w-full h-full border-0 absolute inset-0" 
+                                allow="fullscreen" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            `;
+        } else {
+            slidesContainer.innerHTML = `
+                <p class="text-xs font-bold text-slate-400 py-4">
+                    <i class="fa-solid fa-clock opacity-60 mr-1.5"></i> Las diapositivas para esta clase estarán disponibles muy pronto.
+                </p>
+            `;
+        }
+    }
+    // --- FIN DE CARGA DE DIAPOSITIVAS DE CANVA ---
             updateStepsLockState(cls.id);
             loadVocabCard(cls, 0);
             
