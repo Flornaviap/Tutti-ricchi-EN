@@ -431,16 +431,27 @@
                     </div>
 
                     <!-- Tarjeta de Instrucciones y Botón de Redirección -->
-                    <div id="audioTaskContainer" class="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-2xl p-6 relative z-10">
+                    <div id="audioTaskContainer" class="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-2xl p-6 relative z-10 mb-6">
                         <!-- Se poblará dinámicamente con JavaScript -->
+                    </div>
+
+                    <!-- AQUÍ ESTÁ EL BOTÓN DE CHECK PARA LA TAREA -->
+                    <div class="pt-4 border-t border-slate-200/60 flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
+                        <div class="text-center sm:text-left">
+                            <span class="text-[10px] font-bold text-slate-400 block uppercase">Progreso de la Práctica Oral</span>
+                            <p class="text-xs text-slate-600 font-extrabold" id="step3Status">Pendiente de entrega</p>
+                        </div>
+                        <button id="completeStep3Btn" onclick="markStep3Complete()" class="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check"></i> Marcar Tarea como Subida / Uploaded
+                        </button>
                     </div>
                 </div>
               
-                <!-- PASO 3: MINI-TEST INTEGRADO DE LA CLASE -->
-                <div id="step3Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
+                <!-- PASO 4: MINI-TEST INTEGRADO DE LA CLASE (Cambiado de 03 a 04) -->
+                <div id="step4Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
                     <div class="flex items-center gap-4 mb-6 relative z-10">
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-red-500 text-white flex items-center justify-center text-xl shadow-md">
-                            <span class="font-extrabold text-base">03</span>
+                            <span class="font-extrabold text-base">04</span>
                         </div>
                         <div>
                             <h4 class="text-xl font-black text-slate-900">Prueba tu Conocimiento / Mini-Test</h4>
@@ -1011,8 +1022,9 @@
         function isClassFinished(classId) {
             const hasVocab = userProgress.completedResources.includes(`c${classId}_vocab_grammar`);
             const hasVideo = userProgress.completedResources.includes(`c${classId}_video`);
+            const hasAudio = userProgress.completedResources.includes(`c${classId}_audio`);
             const bestQuizScore = userProgress.completedQuizzes[classId] || 0;
-            return hasVocab && hasVideo && (bestQuizScore === 100);
+            return hasVocab && hasVideo && hasAudio && (bestQuizScore === 100);
         }
 
         function isClassUnlocked(classId) {
@@ -1246,9 +1258,10 @@
 
             const hasVocab = userProgress.completedResources.includes(`c${cls.id}_vocab_grammar`) ? 1 : 0;
             const hasVideo = userProgress.completedResources.includes(`c${cls.id}_video`) ? 1 : 0;
+            const hasAudio = userProgress.completedResources.includes(`c${cls.id}_audio`) ? 1 : 0;
             const bestScore = userProgress.completedQuizzes[classId] || 0;
             const hasQuizApproved = bestScore === 100 ? 1 : 0;
-            const totalStepsCompleted = hasVocab + hasVideo + hasQuizApproved;
+            const totalStepsCompleted = hasVocab + hasVideo + hasAudio + hasQuizApproved;
 
             headerArea.innerHTML = `
                 <div class="max-w-2xl">
@@ -1262,10 +1275,10 @@
                 <div class="bg-orange-50 border-2 border-orange-100 rounded-3xl p-5 flex items-center gap-5 self-stretch md:self-auto justify-between md:justify-start min-w-[240px] transform hover:scale-[1.01] transition-transform duration-200">
                     <div class="text-center md:text-left">
                         <span class="text-[10px] text-orange-400 font-black uppercase block tracking-wider">Avance del Módulo</span>
-                        <span class="text-lg font-black text-slate-900" id="classOverallRatio">${totalStepsCompleted}/3 Pasos Hechos</span>
+                        <span class="text-lg font-black text-slate-900" id="classOverallRatio">${totalStepsCompleted}/4 Pasos Hechos</span>
                     </div>
                     <div class="w-14 h-14 rounded-full border-4 border-orange-100 border-t-orange-600 flex items-center justify-center font-black text-orange-600 text-sm shadow-inner">
-                        ${Math.round((totalStepsCompleted / 3) * 100)}%
+                        ${Math.round((totalStepsCompleted / 4) * 100)}%
                     </div>
                 </div>
             `;
@@ -1460,7 +1473,21 @@ if (mediaContainer) {
         function updateStepsLockState(classId) {
             const hasVocab = userProgress.completedResources.includes(`c${classId}_vocab_grammar`);
             const hasVideo = userProgress.completedResources.includes(`c${classId}_video`);
-
+// Control visual del Paso 3 (Tarea de Audio)
+            const hasAudio = userProgress.completedResources.includes(`c${classId}_audio`);
+            const step3StatusText = document.getElementById('step3Status');
+            const completeStep3Btn = document.getElementById('completeStep3Btn');
+            if (step3StatusText && completeStep3Btn) {
+                if (hasAudio) {
+                    step3StatusText.innerHTML = `<span class="text-emerald-600 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Tarea Subida a Drive</span>`;
+                    completeStep3Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-95 transition-colors shadow-sm flex items-center justify-center gap-2";
+                    completeStep3Btn.innerHTML = `<i class="fa-solid fa-check-double"></i> Tarea Subida / Uploaded`;
+                } else {
+                    step3StatusText.textContent = "Pendiente de entrega";
+                    completeStep3Btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-black text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm flex items-center justify-center gap-2";
+                    completeStep3Btn.innerHTML = `<i class="fa-solid fa-check"></i> Marcar Tarea como Subida / Uploaded`;
+                }
+            }
             const step1StatusText = document.getElementById('step1Status');
             const completeStep1Btn = document.getElementById('completeStep1Btn');
             if (hasVocab) {
@@ -1486,14 +1513,14 @@ if (mediaContainer) {
             }
         }
 
-        window.markStep1Complete = function() {
+        window.markStep3Complete = function() {
             const classId = userProgress.currentClassId;
-            const resKey = `c${classId}_vocab_grammar`;
+            const resKey = `c${classId}_audio`;
             
             if (!userProgress.completedResources.includes(resKey)) {
                 userProgress.completedResources.push(resKey);
                 playSuccessSound();
-                showToast("¡Vocabulario Guardado!", "Se ha registrado que estudiaste el vocabulario.", "fa-bookmark text-emerald-500");
+                showToast("¡Tarea Registrada!", "Has marcado la práctica oral como subida a Drive.", "fa-microphone-lines text-rose-500");
                 
                 saveProgress();
                 updateStepsLockState(classId);
@@ -1503,7 +1530,7 @@ if (mediaContainer) {
                 saveProgress();
                 updateStepsLockState(classId);
                 refreshHeaderRatio();
-                showToast("Progreso Actualizado", "Se quitó la marca de estudio de esta sección.", "fa-rotate-right text-orange-500");
+                showToast("Progreso Actualizado", "Se quitó la marca de entrega de esta tarea.", "fa-rotate-right text-orange-500");
             }
         }
 
@@ -1532,14 +1559,15 @@ if (mediaContainer) {
             const classId = userProgress.currentClassId;
             const hasVocab = userProgress.completedResources.includes(`c${classId}_vocab_grammar`) ? 1 : 0;
             const hasVideo = userProgress.completedResources.includes(`c${classId}_video`) ? 1 : 0;
+            const hasAudio = userProgress.completedResources.includes(`c${classId}_audio`) ? 1 : 0;
             const bestScore = userProgress.completedQuizzes[classId] || 0;
             const hasQuizApproved = bestScore === 100 ? 1 : 0;
-            const totalStepsCompleted = hasVocab + hasVideo + hasQuizApproved;
+            const totalStepsCompleted = hasVocab + hasVideo + hasAudio + hasQuizApproved;
 
-            document.getElementById('classOverallRatio').textContent = `${totalStepsCompleted}/3 Pasos Hechos`;
+            document.getElementById('classOverallRatio').textContent = `${totalStepsCompleted}/4 Pasos Hechos`;
             const percentContainer = document.querySelector('#classHeaderArea .w-14');
             if (percentContainer) {
-                percentContainer.textContent = `${Math.round((totalStepsCompleted / 3) * 100)}%`;
+                percentContainer.textContent = `${Math.round((totalStepsCompleted / 4) * 100)}%`;
             }
         }
 
