@@ -324,23 +324,7 @@
                         </div>
                     </div>
                 </div>
-<!-- NUEVO APARTADO: DIAPOSITIVAS DE LA CLASE -->
-                <div id="stepSlidesBlock" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
-                    <div class="flex items-center gap-4 mb-6 relative z-10">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center text-xl shadow-md">
-                            <i class="fa-solid fa-person-chalkboard"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-black text-slate-900">Diapositivas de la Clase / Class Slides</h4>
-                            <p class="text-xs text-slate-500">Review the class presentation / Repasa el material visual de apoyo (PDF o PowerPoint).</p>
-                        </div>
-                    </div>
 
-                    <!-- Contenedor Dinámico del Botón/Tarjeta de Drive -->
-                    <div id="slidesContainer" class="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center relative z-10">
-                        <!-- Se poblará dinámicamente con JavaScript -->
-                    </div>
-                </div>
               
                 <!-- PASO 2: CLASE GRABADA / VIDEO SESIÓN -->
                 <div id="step2Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
@@ -491,7 +475,23 @@
                         </div>
                     </div>
                 </div>
+<!-- NUEVO APARTADO: DIAPOSITIVAS DE LA CLASE -->
+                <div id="stepSlidesBlock" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center text-xl shadow-md">
+                            <i class="fa-solid fa-person-chalkboard"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-black text-slate-900">Diapositivas de la Clase / Class Slides</h4>
+                            <p class="text-xs text-slate-500">Review the class presentation / Repasa el material visual de apoyo (PDF o PowerPoint).</p>
+                        </div>
+                    </div>
 
+                    <!-- Contenedor Dinámico del Botón/Tarjeta de Drive -->
+                    <div id="slidesContainer" class="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center relative z-10">
+                        <!-- Se poblará dinámicamente con JavaScript -->
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1512,7 +1512,26 @@ if (mediaContainer) {
                 completeStep2Btn.innerHTML = `<i class="fa-solid fa-square-check"></i> Marcar Video como Visto / Watched`;
             }
         }
-
+window.markStep1Complete = function() {
+            const classId = userProgress.currentClassId;
+            const resKey = `c${classId}_vocab_grammar`;
+            
+            if (!userProgress.completedResources.includes(resKey)) {
+                userProgress.completedResources.push(resKey);
+                playSuccessSound();
+                showToast("¡Vocabulario Guardado!", "Se ha registrado que estudiaste el vocabulario.", "fa-bookmark text-emerald-500");
+                
+                saveProgress();
+                updateStepsLockState(classId);
+                refreshHeaderRatio();
+            } else {
+                userProgress.completedResources = userProgress.completedResources.filter(r => r !== resKey);
+                saveProgress();
+                updateStepsLockState(classId);
+                refreshHeaderRatio();
+                showToast("Progreso Actualizado", "Se quitó la marca de estudio de esta sección.", "fa-rotate-right text-orange-500");
+            }
+        }
         window.markStep3Complete = function() {
             const classId = userProgress.currentClassId;
             const resKey = `c${classId}_audio`;
