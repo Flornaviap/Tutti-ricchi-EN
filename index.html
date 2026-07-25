@@ -562,7 +562,8 @@
                 },
                 video: {
                     title: "Video 02: Describing Soups and Local Juices / Caldos tradicionales y jugos",
-                    duration: "06:15"                    
+                    duration: "06:15",
+                    youtubeId: "https://www.youtube.com/watch?v=oBSukrYNJT4"
                 },
                 vocabulary: [
                     { term: "Are you ready to order?", translation: "¿Están listos para ordenar?", pronunciation: "/ɑːr juː ˈred.i tuː ˈɔː.dər/", example: "Are you ready to order your drinks?" },
@@ -612,7 +613,8 @@
                 },
                 video: {
                     title: "Video 03: Explaining Main Dishes & Sides / Secos, menestras y patacones",
-                    duration: "07:45"
+                    duration: "07:45",
+                    youtubeId: "PENDIENTE"
                 },
                 vocabulary: [
                     { term: "For the main dish...", translation: "Para el plato fuerte...", pronunciation: "/fɔːr ðə meɪn dɪʃ/", example: "For the main dish, we have chicken or beef." },
@@ -1257,69 +1259,79 @@
             document.getElementById('videoClassDuration').textContent = `${cls.video.duration} min de duración`;
           const mediaContainer = document.querySelector('#step2Block .lg\\:col-span-2');
 if (mediaContainer) {
-    if (cls.video.driveUrl) {
-        clearInterval(mockVideoTimer);
-        isMockVideoPlaying = false;
-        
-        // Transforma la URL compartida de Drive al formato de reproducción embebida automáticamente
-        const embedUrl = cls.video.driveUrl.replace(/\/view.*$/, '/preview');
-
-        mediaContainer.innerHTML = `
-            <div class="aspect-video w-full bg-slate-950 rounded-2xl overflow-hidden shadow-lg border border-slate-800">
-                <iframe class="w-full h-full" 
-                        src="${embedUrl}" 
-                        title="${cls.video.title}" 
-                        allow="autoplay"
-                        allowfullscreen>
-                </iframe>
-            </div>
-        `;
-    } else if (cls.video.youtubeId) {
-        clearInterval(mockVideoTimer);
-        isMockVideoPlaying = false;
-        
-        mediaContainer.innerHTML = `
-            <div class="aspect-video w-full bg-slate-950 rounded-2xl overflow-hidden shadow-lg border border-slate-800">
-                <iframe class="w-full h-full" 
-                        src="https://www.youtube.com/embed/${cls.video.youtubeId}?rel=0" 
-                        title="${cls.video.title}" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                </iframe>
-            </div>
-        `;
-    } else {
-        mediaContainer.innerHTML = `
-            <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800 flex flex-col justify-end group">
-                <div class="absolute inset-0 bg-cover bg-center opacity-40" id="videoThumbnail" style="background-image: url('https://placehold.co/800x450/2c3e50/ffffff?text=Class+${cls.id}+-+ESP+Waiters');"></div>
-                <button onclick="toggleMockVideo()" id="videoBigPlayBtn" class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-orange-600 text-white flex items-center justify-center text-2xl shadow-md hover:bg-yellow-600 hover:scale-105 transition-transform z-10">
-                    <i class="fa-solid fa-play ml-1" id="bigPlayIcon"></i>
-                </button>
-                <div class="bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 w-full relative z-10 opacity-95 flex flex-col gap-2">
-                    <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative" id="videoProgressTrack" onclick="seekVideo(event)">
-                        <div class="bg-orange-500 h-full w-0" id="videoProgressBar"></div>
-                    </div>
-                    <div class="flex items-center justify-between text-white text-xs">
-                        <div class="flex items-center gap-4">
-                            <button onclick="toggleMockVideo()" class="hover:text-orange-400 transition-colors">
-                                <i class="fa-solid fa-play" id="playPauseIcon"></i>
-                            </button>
-                            <span id="videoTimeText">0:00 / 10:00</span>
+                // 1. REVISIÓN PARA YOUTUBE: Verifica si hay un link de YouTube válido y que no sea "PENDIENTE"
+                if (cls.video.youtubeId && !cls.video.youtubeId.includes("PENDIENTE")) {
+                    clearInterval(mockVideoTimer);
+                    isMockVideoPlaying = false;
+                    
+                    // Extrae automáticamente el ID secreto de 11 letras aunque pegues el link largo de YouTube
+                    let ytId = cls.video.youtubeId;
+                    const match = ytId.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                    if (match) ytId = match[1];
+                    
+                    mediaContainer.innerHTML = `
+                        <div class="aspect-video w-full bg-slate-950 rounded-2xl overflow-hidden shadow-lg border border-slate-800">
+                            <iframe class="w-full h-full" 
+                                    src="https://www.youtube.com/embed/${ytId}?rel=0" 
+                                    title="${cls.video.title}" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                            </iframe>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-volume-high"></i>
-                            <div class="w-16 bg-white/20 h-1 rounded-full overflow-hidden">
-                                <div class="bg-white h-full w-4/5"></div>
+                    `;
+                } 
+                // 2. REVISIÓN PARA GOOGLE DRIVE: Si no vio YouTube, revisa si pusiste un link de Drive válido
+                else if (cls.video.driveUrl && !cls.video.driveUrl.includes("PENDIENTE")) {
+                    clearInterval(mockVideoTimer);
+                    isMockVideoPlaying = false;
+                    
+                    // Transforma tu enlace normal de Drive en un reproductor de video embebido sin bordes
+                    const embedUrl = cls.video.driveUrl.replace(/\/(view|edit|preview).*$/, '/preview');
+
+                    mediaContainer.innerHTML = `
+                        <div class="aspect-video w-full bg-slate-950 rounded-2xl overflow-hidden shadow-lg border border-slate-800">
+                            <iframe class="w-full h-full" 
+                                    src="${embedUrl}" 
+                                    title="${cls.video.title}" 
+                                    allow="autoplay; fullscreen"
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    `;
+                } 
+                // 3. REPRODUCTOR DE PRUEBA: Si ambas dicen "PENDIENTE" o están vacías, muestra el video simulado
+                else {
+                    mediaContainer.innerHTML = `
+                        <div class="aspect-video w-full bg-slate-950 rounded-2xl relative overflow-hidden shadow-lg border border-slate-800 flex flex-col justify-end group">
+                            <div class="absolute inset-0 bg-cover bg-center opacity-40" id="videoThumbnail" style="background-image: url('https://placehold.co/800x450/2c3e50/ffffff?text=Class+${cls.id}+-+ESP+Waiters');"></div>
+                            <button onclick="toggleMockVideo()" id="videoBigPlayBtn" class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-orange-600 text-white flex items-center justify-center text-2xl shadow-md hover:bg-yellow-600 hover:scale-105 transition-transform z-10">
+                                <i class="fa-solid fa-play ml-1" id="bigPlayIcon"></i>
+                            </button>
+                            <div class="bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 w-full relative z-10 opacity-95 flex flex-col gap-2">
+                                <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden cursor-pointer relative" id="videoProgressTrack" onclick="seekVideo(event)">
+                                    <div class="bg-orange-500 h-full w-0" id="videoProgressBar"></div>
+                                </div>
+                                <div class="flex items-center justify-between text-white text-xs">
+                                    <div class="flex items-center gap-4">
+                                        <button onclick="toggleMockVideo()" class="hover:text-orange-400 transition-colors">
+                                            <i class="fa-solid fa-play" id="playPauseIcon"></i>
+                                        </button>
+                                        <span id="videoTimeText">0:00 / 10:00</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                        <div class="w-16 bg-white/20 h-1 rounded-full overflow-hidden">
+                                            <div class="bg-white h-full w-4/5"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        stopMockVideo();
-    }
-}
+                    `;
+                    stopMockVideo();
+                }
+            }
 // --- CARGA DINÁMICA DE DIAPOSITIVAS DE CANVA ---
     const slidesContainer = document.getElementById('slidesContainer');
     if (slidesContainer) {
