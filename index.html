@@ -418,6 +418,24 @@
                     </div>
                 </div>
 
+              <!-- PASO 3: TAREA PRÁCTICA DE AUDIO (SPEAKING TASK) -->
+                <div id="step3Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 to-rose-600 text-white flex items-center justify-center text-xl shadow-md">
+                            <span class="font-extrabold text-base">03</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-black text-slate-900">Práctica de Voz / Speaking Task</h4>
+                            <p class="text-xs text-slate-500">Record and upload your audio / Graba tu práctica oral y súbela a la carpeta del módulo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta de Instrucciones y Botón de Redirección -->
+                    <div id="audioTaskContainer" class="bg-slate-50/80 border-2 border-dashed border-slate-200 rounded-2xl p-6 relative z-10">
+                        <!-- Se poblará dinámicamente con JavaScript -->
+                    </div>
+                </div>
+              
                 <!-- PASO 3: MINI-TEST INTEGRADO DE LA CLASE -->
                 <div id="step3Block" class="bg-white/95 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden transition-all duration-200">
                     <div class="flex items-center gap-4 mb-6 relative z-10">
@@ -1387,7 +1405,49 @@ if (mediaContainer) {
             `;
         }
     }
+      
     // --- FIN DE CARGA DE DIAPOSITIVAS DE CANVA ---
+
+          // --- CARGA DINÁMICA DE TAREAS DE AUDIO (CARPETAS DE DRIVE) ---
+            const audioTaskContainer = document.getElementById('audioTaskContainer');
+            if (audioTaskContainer) {
+                // Configuración de enlaces a las carpetas de Drive para cada lección
+                const driveFoldersConfig = {
+                    1: { url: "https://drive.google.com/drive/folders/1d-44MiutJM7MEhkzNLYJje55FN9PcHRY?usp=drive_link", desc: "Graba un audio saludando a los comensales y guiándolos a su mesa en inglés." },
+                    2: { url: "https://drive.google.com/drive/folders/12EZ9PvXMpChahXCuLIbWkWePuarDssM_?usp=drive_link", desc: "Graba un audio explicando al cliente una de las sopas tradicionales o jugos en inglés." },
+                    3: { url: "https://drive.google.com/drive/folders/1V0bObdmVqjhNulFOZgWjVl1tV4HErtM0?usp=drive_link", desc: "Graba un audio describiendo cómo viene servido el plato fuerte con sus guarniciones." },
+                    4: { url: "https://drive.google.com/drive/folders/16Si1ic-HlIn5pNlN4dsveRTRZsk1szsf?usp=drive_link", desc: "Graba un audio simulando la toma de un pedido y preguntando si tienen alergias." },
+                    5: { url: "https://drive.google.com/drive/folders/13rJ9yNuVr3GmnPMqIagVb5q7_cIeBKGz?usp=drive_link", desc: "Graba un audio ofreciendo los diferentes tamaños de porciones o jarras de jugo." },
+                    6: { url: "https://drive.google.com/drive/folders/1mugFEHnBMNF51XcOMOnWScj-lJ6OZSG3?usp=drive_link", desc: "Graba un audio cobrando la cuenta, entregando el cambio y despidiéndote cálidamente." }
+                };
+
+                const currentTask = driveFoldersConfig[cls.id] || driveFoldersConfig[1];
+
+                audioTaskContainer.innerHTML = `
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="space-y-2 text-center md:text-left">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-rose-50 text-rose-600 border border-rose-200 uppercase tracking-wider">
+                                <i class="fa-solid fa-microphone-lines"></i> Tarea del Módulo 0${cls.id}
+                            </span>
+                            <h5 class="text-base font-black text-slate-900">Instrucción de la práctica:</h5>
+                            <p class="text-xs text-slate-600 leading-relaxed max-w-xl">${currentTask.desc}</p>
+                            <p class="text-[11px] font-extrabold text-slate-400 mt-2">
+                                <i class="fa-solid fa-circle-info mr-1 text-rose-500"></i> Recuerda nombrar tu archivo con tu nombre y apellido antes de subirlo.
+                            </p>
+                        </div>
+                        
+                        <a href="${currentTask.url}" target="_blank" rel="noopener noreferrer" 
+                           class="w-full md:w-auto px-6 py-4 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-pink-500 via-rose-600 to-red-600 hover:opacity-95 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex flex-col items-center justify-center gap-1 flex-shrink-0 text-center group">
+                            <div class="flex items-center gap-2 text-sm">
+                                <span>Subir Tarea a Drive</span>
+                                <i class="fa-solid fa-folder-open transition-transform group-hover:scale-110"></i>
+                            </div>
+                            <span class="text-[9px] text-rose-100 font-medium">Abrir carpeta de la Clase 0${cls.id}</span>
+                        </a>
+                    </div>
+                `;
+            }
+            // --- FIN DE CARGA DE TAREAS DE AUDIO ---
             updateStepsLockState(cls.id);
             loadVocabCard(cls, 0);
             
