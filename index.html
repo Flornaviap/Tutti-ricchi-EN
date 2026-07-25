@@ -1610,55 +1610,64 @@ if (mediaContainer) {
             const bestScore = userProgress.completedQuizzes[cls.id] || 0;
 
             if (bestScore === 100) {
-                let googleFormsHTML = '';
-                if (cls.id === 1) {
-                    googleFormsHTML = `
-                        <div class="mt-8 pt-6 border-t border-slate-200 text-left space-y-4">
-                            <div class="bg-orange-50 border border-orange-200 rounded-2xl p-4 flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center text-lg shadow-sm">
-                                    <i class="fa-solid fa-file-signature"></i>
-                                </div>
-                                <div>
-                                    <h6 class="text-xs font-black text-slate-900">Formulario Oficial de Registro / Official Sign-in</h6>
-                                    <p class="text-[11px] text-slate-500 leading-tight">Por favor, completa el siguiente formulario para guardar tu asistencia y calificación en la base de datos de Tutti Ricchi.</p>
-                                </div>
+                
+                // =========================================================================
+                // ↓↓↓↓↓ BORRA DESDE AQUÍ Y PEGA EL NUEVO BLOQUE (formsConfig) ↓↓↓↓↓
+                // =========================================================================
+                
+                // Diccionario de colores y enlaces para los formularios de las 6 clases
+                const formsConfig = {
+                    1: { 
+                        theme: 'bg-orange-50 border-orange-200', btn: 'bg-orange-600', 
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSfznO0v875VLWSU-ikcNpnfTjNZ3kbAoi41EBmK6kCXHIlYmQ/viewform?embedded=true' 
+                    },
+                    2: { 
+                        theme: 'bg-blue-50 border-blue-200', btn: 'bg-blue-600', 
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLScfjSHqq7pXnsLltFGbGMtTBSyR7kgCRgPEBlqXmCO_87cPKg/viewform?embedded=true' 
+                    },
+                    3: { 
+                        theme: 'bg-emerald-50 border-emerald-200', btn: 'bg-emerald-600', 
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSfOiBMzmbBOqeIjoimbtk40EFCsIxv4Xld3fGiv1LvzmdFymQ/viewform?embedded=true' 
+                    },
+                    4: { 
+                        theme: 'bg-rose-50 border-rose-200', btn: 'bg-rose-600', 
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSeCUQa1IQQd5ODeMQLXG_mi0ZZGoaGdB242Il3xyx8efMzJsQ/viewform?embedded=true' 
+                    },
+                    5: { 
+                        theme: 'bg-purple-50 border-purple-200', btn: 'bg-purple-600', 
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSdbPhY8147AcIQTz7lX1R5-zwfRWMEOmDd3kA02Qy4yt_NC1A/viewform?usp=sharing&ouid=109585652391934096915' 
+                    },
+                    6: { 
+                        theme: 'bg-amber-50 border-amber-200', btn: 'bg-amber-600', 
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSdQaxzD7Xpx5Ot8uqcPnbXgUpReF3K4miGyJHNAlXD9kQ8o2Q/viewform?embedded=true' 
+                    }
+                };
+
+                // Selecciona la configuración del módulo actual (o usa la 1 por defecto)
+                const currentForm = formsConfig[cls.id] || formsConfig[1];
+
+                const googleFormsHTML = `
+                    <div class="mt-8 pt-6 border-t border-slate-200 text-left space-y-4">
+                        <div class="${currentForm.theme} border rounded-2xl p-4 flex items-center gap-3 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl ${currentForm.btn} text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+                                <i class="fa-solid fa-file-signature"></i>
                             </div>
-                            <div class="w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-white" style="height: 600px;">
-                                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfznO0v875VLWSU-ikcNpnfTjNZ3kbAoi41EBmK6kCXHIlYmQ/viewform?usp=header" 
-                                        class="w-full h-full" 
-                                        frameborder="0" 
-                                        marginheight="0" 
-                                        marginwidth="0">
-                                    Cargando formulario…
-                                </iframe>
+                            <div>
+                                <h6 class="text-xs font-black text-slate-900">Formulario Oficial de Registro - Módulo 0${cls.id}</h6>
+                                <p class="text-[11px] text-slate-500 leading-tight">¡Módulo superado al 100%! Por favor, completa el siguiente formulario para guardar tu asistencia y calificación de la Clase ${cls.id} en la base de datos.</p>
                             </div>
                         </div>
-                    `;
-                } else if (cls.id === 2) {
-                    // ---> AQUÍ ESTÁ EL NUEVO BLOQUE PARA LA CLASE 2 <---
-                    googleFormsHTML = `
-                        <div class="mt-8 pt-6 border-t border-slate-200 text-left space-y-4">
-                            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shadow-sm">
-                                    <i class="fa-solid fa-file-signature"></i>
-                                </div>
-                                <div>
-                                    <h6 class="text-xs font-black text-slate-900">Formulario de Registro - Módulo 02</h6>
-                                    <p class="text-[11px] text-slate-500 leading-tight">¡Excelente trabajo! Completa el formulario de la Clase 2 para registrar tu avance en la base de datos.</p>
-                                </div>
-                            </div>
-                            <div class="w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-white" style="height: 600px;">
-                                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfjSHqq7pXnsLltFGbGMtTBSyR7kgCRgPEBlqXmCO_87cPKg/viewform?usp=header" 
-                                        class="w-full h-full" 
-                                        frameborder="0" 
-                                        marginheight="0" 
-                                        marginwidth="0">
-                                    Cargando formulario…
-                                </iframe>
-                            </div>
+                        <div class="w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner bg-white" style="height: 600px;">
+                            <iframe src="${currentForm.url}" 
+                                    class="w-full h-full" 
+                                    frameborder="0" 
+                                    marginheight="0" 
+                                    marginwidth="0">
+                                Cargando formulario…
+                            </iframe>
                         </div>
-                    `;
-                }
+                    </div>
+                `;
 
                 quizContainer.innerHTML = `
                     <div class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border-2 border-emerald-300 p-6 rounded-3xl text-center space-y-4 shadow-sm">
